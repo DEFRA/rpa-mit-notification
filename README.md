@@ -13,7 +13,7 @@ No sensitive information is stored in the local.settings.json.
 When developing locally values may be set via `dotnet user-secrets`.
 
 The simplest way to add secrets to the local store via Visual Studio by right clicking on the
-`EstRPA.MIT.Notification.Function` project in the Solution Explorer, and selecting 'Manage User Secrets'.
+`RPA.MIT.Notification.Function` project in the Solution Explorer, and selecting 'Manage User Secrets'.
 
 Alternatively save the values into a `secrets.json` file, i.e. 
 ```
