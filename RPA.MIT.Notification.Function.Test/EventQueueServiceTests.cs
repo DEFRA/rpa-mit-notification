@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
-using EST.MIT.Notification.Function.Services;
+using RPA.MIT.Notification.Function.Services;
 using Moq;
 using Xunit;
 
-namespace EST.MIT.Notification.Function.Test;
+namespace RPA.MIT.Notification.Function.Test;
 
 public class EventQueueServiceTests
 {

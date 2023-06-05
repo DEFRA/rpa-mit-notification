@@ -2,7 +2,7 @@
 using Azure;
 using Azure.Data.Tables;
 
-namespace EST.MIT.Notification.Function.Models
+namespace RPA.MIT.Notification.Function.Models
 {
     public class NotificationEntity : ITableEntity
     {

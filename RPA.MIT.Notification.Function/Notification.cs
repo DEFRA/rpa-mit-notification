@@ -1,8 +1,8 @@
 using Azure;
 using Azure.Data.Tables;
-using EST.MIT.Notification.Function.Models;
-using EST.MIT.Notification.Function.Services;
-using EST.MIT.Notification.Function.Validation;
+using RPA.MIT.Notification.Function.Models;
+using RPA.MIT.Notification.Function.Services;
+using RPA.MIT.Notification.Function.Validation;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 
-namespace EST.MIT.Notification
+namespace RPA.MIT.Notification
 {
     public class Notification
     {
