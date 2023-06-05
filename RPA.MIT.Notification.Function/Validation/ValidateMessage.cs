@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
-namespace EST.MIT.Notification.Function.Validation
+namespace RPA.MIT.Notification.Function.Validation
 {
     public static class ValidateMessage
     {

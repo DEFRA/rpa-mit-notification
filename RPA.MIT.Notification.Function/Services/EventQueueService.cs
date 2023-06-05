@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 
-namespace EST.MIT.Notification.Function.Services;
+namespace RPA.MIT.Notification.Function.Services;
 
 public class EventQueueService : IEventQueueService
 {

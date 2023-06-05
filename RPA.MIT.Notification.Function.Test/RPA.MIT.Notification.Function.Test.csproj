@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EST.MIT.Notification.Function\EST.MIT.Notification.Function.csproj" />
+    <ProjectReference Include="..\RPA.MIT.Notification.Function\RPA.MIT.Notification.Function.csproj" />
   </ItemGroup>
 
 </Project>

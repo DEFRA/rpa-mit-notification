@@ -1,7 +1,7 @@
 using Azure;
 using Azure.Data.Tables;
-using EST.MIT.Notification.Function.Models;
-using EST.MIT.Notification.Function.Services;
+using RPA.MIT.Notification.Function.Models;
+using RPA.MIT.Notification.Function.Services;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Timers;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace EST.MIT.Notification.Function.Test
+namespace RPA.MIT.Notification.Function.Test
 {
     public class NotificationTests
     {

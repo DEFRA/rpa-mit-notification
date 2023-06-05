@@ -1,5 +1,5 @@
 ﻿using Azure.Storage.Queues;
-using EST.MIT.Notification.Function.Services;
+using RPA.MIT.Notification.Function.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Notify.Client;
@@ -7,8 +7,8 @@ using Notify.Interfaces;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: FunctionsStartup(typeof(EST.MIT.Notification.Startup))]
-namespace EST.MIT.Notification
+[assembly: FunctionsStartup(typeof(RPA.MIT.Notification.Startup))]
+namespace RPA.MIT.Notification
 {
     [ExcludeFromCodeCoverage]
     public class Startup : FunctionsStartup

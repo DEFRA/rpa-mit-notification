@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EST.MIT.Notification.Function.Models;
+using RPA.MIT.Notification.Function.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Notify.Client;
 using Notify.Interfaces;
 using Notify.Models.Responses;
 
-namespace EST.MIT.Notification.Function.Services;
+namespace RPA.MIT.Notification.Function.Services;
 
 public class NotifyService : INotifyService
 {
