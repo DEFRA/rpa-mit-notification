@@ -1,6 +1,8 @@
 services:
   rpa-mit-notification:
-    build: .
+    build:
+      context: .
+      target: production
     image: rpa-mit-notification
     container_name: rpa-mit-notification
     environment:
