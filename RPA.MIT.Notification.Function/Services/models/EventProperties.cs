@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace EST.MIT.Notification.Function.Services;
+namespace RPA.MIT.Notification.Function.Services;
 
 public class EventProperties
 {

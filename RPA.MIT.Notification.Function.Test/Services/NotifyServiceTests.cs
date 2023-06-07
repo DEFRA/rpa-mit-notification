@@ -1,4 +1,4 @@
-﻿using EST.MIT.Notification.Function.Services;
+﻿using RPA.MIT.Notification.Function.Services;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace EST.MIT.Notification.Function.Test.Services
+namespace RPA.MIT.Notification.Function.Test.Services
 {
     public class NotifyServiceTests
     {

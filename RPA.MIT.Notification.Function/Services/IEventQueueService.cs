@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace EST.MIT.Notification.Function.Services;
+namespace RPA.MIT.Notification.Function.Services;
 
 public interface IEventQueueService
 {

@@ -1,8 +1,8 @@
 
-using EST.MIT.Notification.Function.Models;
+using RPA.MIT.Notification.Function.Models;
 using Notify.Models.Responses;
 
-namespace EST.MIT.Notification.Function.Services;
+namespace RPA.MIT.Notification.Function.Services;
 
 public interface INotifyService
 {

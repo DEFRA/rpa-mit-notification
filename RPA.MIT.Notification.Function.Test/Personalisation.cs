@@ -1,4 +1,4 @@
-﻿namespace EST.MIT.Notification.Function.Test
+﻿namespace RPA.MIT.Notification.Function.Test
 {
     public class Personalisation
     {
