@@ -1,0 +1,23 @@
+services:
+  rpa-mit-notification:
+    build: .
+    image: rpa-mit-notification
+    container_name: rpa-mit-notification
+    environment:
+      APPINSIGHTS_CLOUDROLE: rpa-mit-notification-local
+      FUNCTIONS_WORKER_RUNTIME: dotnet-isolated
+      AzureWebJobsStorage: UseDevelopmentStorage=true
+      QueueConnectionString: UseDevelopmentStorage=true
+      TableConnectionString: UseDevelopmentStorage=true
+      EventQueueName: event
+      AzureWebJobsSecretStorageType: files
+      NotifyApiKey:
+      TriggerTimerInterval: 0 */2 * * * *,
+      PartitionKey: MIT_Notifications
+      templates:approval: 8b70257a-a41c-4260-b9ce-2c6596246fb0
+      templates:approved: 30e785fe-75c7-40cd-aced-8d0856ff57ac
+      templates:error: 5019017c-ac20-42bb-9fad-d72ed135d5bb
+      templates:rejected: b7b06564-4a73-4a94-94e1-61ac58fbc7d2
+      templates:upload: 88709ce9-b2b4-4175-a8fa-d0cf354e58b6
+      schemas:BPS: steve.dickinson@defra.gov.uk
+      schemas:AP: steve.dickinson@defra.gov.uk
