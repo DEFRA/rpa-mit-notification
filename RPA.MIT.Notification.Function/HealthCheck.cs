@@ -9,7 +9,7 @@ namespace RPA.MIT.Notification;
 
 public static class HealthCheck
 {
-    [FunctionName("healthy")]
+    [FunctionName("CheckHealthy")]
     public static async Task<IActionResult> Healthy(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "healthy")] HttpRequest req,
         ILogger log)
@@ -19,7 +19,7 @@ public static class HealthCheck
         return new OkObjectResult("Healthy");
     }
 
-    [FunctionName("healthz")]
+    [FunctionName("CheckHealthz")]
     public static async Task<IActionResult> Healthz(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "healthz")] HttpRequest req,
         ILogger log)
