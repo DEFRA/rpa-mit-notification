@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RPA.MIT.Notification.Function.Test
+namespace RPA.MIT.Notification.Function.Tests
 {
     public class NotificationRequest
     {

@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace RPA.MIT.Notification.Function.Test
+namespace RPA.MIT.Notification.Function.Tests
 {
     public class NotificationTests
     {
