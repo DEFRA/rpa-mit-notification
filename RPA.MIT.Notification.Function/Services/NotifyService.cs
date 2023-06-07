@@ -26,12 +26,12 @@ public class NotifyService : INotifyService
 
     public EmailNotificationResponse SendEmail(string email, string templateId, dynamic messagePersonalisation)
     {
-        Dictionary<string, dynamic> personalisation = new Dictionary<string, dynamic>();
+        Dictionary<string, dynamic> personalisation = new();
 
         foreach (var j in messagePersonalisation)
         {
             var jp = (JProperty)j;
-            var j1 = jp.First();
+            var j1 = jp[0];
 
             personalisation.Add(jp.Name, j1.ToString());
         }

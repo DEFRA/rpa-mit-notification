@@ -10,7 +10,7 @@ namespace RPA.MIT.Notification;
 public static class HealthCheck
 {
     [FunctionName("CheckHealthy")]
-    public static async Task<IActionResult> Healthy(
+    public static IActionResult Healthy(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "healthy")] HttpRequest req,
         ILogger log)
 
@@ -20,7 +20,7 @@ public static class HealthCheck
     }
 
     [FunctionName("CheckHealthz")]
-    public static async Task<IActionResult> Healthz(
+    public static IActionResult Healthz(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "healthz")] HttpRequest req,
         ILogger log)
 
