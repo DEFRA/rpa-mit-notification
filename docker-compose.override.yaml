@@ -1,0 +1,9 @@
+# This override file should be used when running this service in isolation
+# to provide dependencies and expose ports for local testing
+
+services:
+  rpa-mit-notification:
+    image: rpa-mit-notification
+    container_name: rpa-mit-notification-development
+    ports:
+      - "3001:80"
