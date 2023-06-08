@@ -8,10 +8,10 @@ data:
   AzureWebJobsSecretStorageType: {{ quote .Values.container.azureWebJobsSecretStorageType }}
   TriggerTimerInterval: {{ quote .Values.container.triggerTimerInterval }}
   PartitionKey: {{ quote .Values.container.partitionKey }}
-  templates:approval: {{ quote .Values.container.templatesApproval }}
-  templates:approved: {{ quote .Values.container.templatesApproved }}
-  templates:error: {{ quote .Values.container.templatesError }}
-  templates:rejected: {{ quote .Values.container.templatesRejected }}
-  schemas:BPS: {{ quote .Values.container.schemasBPS }}
-  schemas:AP: {{ quote .Values.container.schemasAP }}
+  templatesapproval: {{ quote .Values.container.templatesApproval }}
+  templatesapproved: {{ quote .Values.container.templatesApproved }}
+  templateserror: {{ quote .Values.container.templatesError }}
+  templatesrejected: {{ quote .Values.container.templatesRejected }}
+  schemasBPS: {{ quote .Values.container.schemasBPS }}
+  schemasAP: {{ quote .Values.container.schemasAP }}
 {{- end -}}

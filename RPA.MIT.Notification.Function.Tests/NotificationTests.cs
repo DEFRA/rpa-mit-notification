@@ -33,8 +33,8 @@ namespace RPA.MIT.Notification.Function.Tests
             _mockLogger = new Mock<ILogger>();
             _mockTableClient = new Mock<TableClient>();
 
-            _mockConfiguration.Setup(x => x["schemas:AP"]).Returns("john.smith@defra.gov.uk");
-            _mockConfiguration.Setup(x => x["templates:Approved"]).Returns("00000000-0000-0000-0000-000000000000");
+            _mockConfiguration.Setup(x => x["schemasAP"]).Returns("john.smith@defra.gov.uk");
+            _mockConfiguration.Setup(x => x["templatesApproved"]).Returns("00000000-0000-0000-0000-000000000000");
             _sut = new Notification(_mockNotifyService.Object, _mockConfiguration.Object, _mockEventQueueService.Object);
         }
 

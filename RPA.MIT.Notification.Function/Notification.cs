@@ -47,8 +47,8 @@ namespace RPA.MIT.Notification
                 dynamic notificationMsgObj = JObject.Parse(notificationMsg);
                 string templateName = notificationMsgObj.Action;
                 string scheme = notificationMsgObj.Scheme;
-                var templateId = _configuration[$"templates:{templateName}"];
-                var emailAddress = _configuration[$"schemas:{scheme}"];
+                var templateId = _configuration[$"templates{templateName}"];
+                var emailAddress = _configuration[$"schemas{scheme}"];
                 string id = notificationMsgObj.Id;
 
                 if (templateId == null)
