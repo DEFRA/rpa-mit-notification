@@ -23,7 +23,7 @@ namespace RPA.MIT.Notification.Function.Tests
         private readonly Mock<IEventQueueService> _mockEventQueueService;
         private readonly Mock<IConfiguration> _mockConfiguration;
         private readonly Mock<TableClient> _mockTableClient;
-        private readonly Mock<ILogger> _mockLogger;
+        private readonly Mock<ILoggerFactory> _mockLogger;
         private readonly Notification _sut;
 
         public NotificationTests()
@@ -32,12 +32,12 @@ namespace RPA.MIT.Notification.Function.Tests
             _mockNotifyService = new Mock<INotifyService>();
             _mockEventQueueService = new Mock<IEventQueueService>();
             _mockConfiguration = new Mock<IConfiguration>();
-            _mockLogger = new Mock<ILogger>();
+            _mockLogger = new Mock<ILoggerFactory>();
             _mockTableClient = new Mock<TableClient>();
 
             _mockConfiguration.Setup(x => x["schemasAP"]).Returns("john.smith@defra.gov.uk");
             _mockConfiguration.Setup(x => x["templatesApproved"]).Returns("00000000-0000-0000-0000-000000000000");
-            _sut = new  Notification(_mockNotificationTable.Object, _mockNotifyService.Object, _mockConfiguration.Object, _mockEventQueueService.Object, _mockLogger);
+            _sut = new  Notification(_mockNotificationTable.Object, _mockNotifyService.Object, _mockConfiguration.Object, _mockEventQueueService.Object, _mockLogger.Object);
         }
 
         [Fact]
