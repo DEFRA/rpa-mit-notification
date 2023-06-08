@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Azure.Data.Tables;
 using Azure.Storage.Queues;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,22 +13,26 @@ var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureAppConfiguration(config => config
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("local.settings.json")
+                    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables())
     .ConfigureServices(services =>
     {
         Console.WriteLine("Startup.ConfigureServices() called");
-        services.AddSingleton<INotificationClient>(sp =>
-        {
-            IConfiguration configuration = sp.GetService<IConfiguration>();
-            return new NotificationClient(configuration["NotifyApiKey"]);
-        });
+        var serviceProvider = services.BuildServiceProvider();
+
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
+        services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
-        services.AddSingleton<IEventQueueService>(sp =>
+        services.AddSingleton<IEventQueueService>(_ =>
         {
-            IConfiguration configuration = sp.GetService<IConfiguration>();
-            var eventQueueClient = new QueueClient(configuration["QueueConnectionString"], configuration["EventQueueName"]);
+            var eventQueueClient = new QueueClient(configuration.GetSection("QueueConnectionString").Value, configuration.GetSection("EventQueueName").Value);
             return new EventQueueService(eventQueueClient);
+        });
+        services.AddSingleton<INotificationTable>(_ =>
+        {
+            var tableClient = new TableClient(configuration.GetSection("TableConnectionString").Value, "invoicenotification");
+            return new NotificationTable(tableClient);
         });
     })
     .Build();
