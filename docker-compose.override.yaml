@@ -4,7 +4,7 @@
 services:
   rpa-mit-notification:
     build:
-      target: development
+      target: production
     image: rpa-mit-notification-development
     container_name: rpa-mit-notification-development
     ports:

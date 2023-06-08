@@ -1,9 +1,8 @@
 using Azure;
 using Azure.Data.Tables;
+using RPA.MIT.Notification;
 using RPA.MIT.Notification.Function.Models;
 using RPA.MIT.Notification.Function.Services;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Timers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -35,7 +34,7 @@ namespace RPA.MIT.Notification.Function.Tests
 
             _mockConfiguration.Setup(x => x["schemasAP"]).Returns("john.smith@defra.gov.uk");
             _mockConfiguration.Setup(x => x["templatesApproved"]).Returns("00000000-0000-0000-0000-000000000000");
-            _sut = new Notification(_mockNotifyService.Object, _mockConfiguration.Object, _mockEventQueueService.Object);
+            _sut = new  Notification(_mockNotifyService.Object, _mockConfiguration.Object, _mockEventQueueService.Object);
         }
 
         [Fact]
@@ -51,7 +50,7 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(notificationRequest);
-            _sut.CreateEvent(message, _mockTableClient.Object, _mockLogger.Object);
+            _sut.CreateEvent(message, _mockTableClient.Object);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
         }
@@ -69,7 +68,7 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(notificationRequest);
-            _sut.CreateEvent(message, _mockTableClient.Object, _mockLogger.Object);
+            _sut.CreateEvent(message, _mockTableClient.Object);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
         }
@@ -77,7 +76,7 @@ namespace RPA.MIT.Notification.Function.Tests
         [Fact]
         public async System.Threading.Tasks.Task CreateEvent_Exception_Returns_Null_NotificationEntity()
         {
-            Notification notifyFunction = new(null, null, null);
+            Notification notifyFunction = new(null, null);
             NotificationEntity? notificationEntity = null;
             var notificationRequest = new NotificationRequest
             {
@@ -89,7 +88,7 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(notificationRequest);
-            await Assert.ThrowsAsync<NullReferenceException>(() => notifyFunction.CreateEvent(message, _mockTableClient.Object, _mockLogger.Object));
+            await Assert.ThrowsAsync<NullReferenceException>(() => notifyFunction.CreateEvent(message, _mockTableClient.Object));
             Assert.Null(notificationEntity);
         }
 
@@ -114,7 +113,7 @@ namespace RPA.MIT.Notification.Function.Tests
             string message = JsonConvert.SerializeObject(notificationRequest);
             _mockNotifyService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JObject>())).Returns(emailResponse);
 
-            _sut.CreateEvent(message, _mockTableClient.Object, _mockLogger.Object);
+            _sut.CreateEvent(message, _mockTableClient.Object);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Once);
         }
@@ -137,7 +136,7 @@ namespace RPA.MIT.Notification.Function.Tests
 
             _mockNotifyService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(emailResponse);
 
-            _sut.CreateEvent(message, _mockTableClient.Object, _mockLogger.Object);
+            _sut.CreateEvent(message, _mockTableClient.Object);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
         }

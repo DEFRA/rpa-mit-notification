@@ -1,31 +1,39 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
+using System.Net;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
 namespace RPA.MIT.Notification;
 
-public static class HealthCheck
+public class HealthCheck
 {
-    [FunctionName("CheckHealthy")]
-    public static IActionResult Healthy(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "healthy")] HttpRequest req,
-        ILogger log)
+    private readonly ILogger _logger;
 
+    public HealthCheck(ILoggerFactory loggerFactory)
     {
-        log.LogInformation("Healthy check.");
-        return new OkObjectResult("Healthy");
+        _logger = loggerFactory.CreateLogger<HealthCheck>();
     }
 
-    [FunctionName("CheckHealthz")]
-    public static IActionResult Healthz(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "healthz")] HttpRequest req,
-        ILogger log)
-
+    [Function("healthy")]
+    public HttpResponseData RunHealthy(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
     {
-        log.LogInformation("Healthy check.");
-        return new OkObjectResult("healthz");
+        _logger.LogInformation("Healthy check.");
+
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+        return response;
+    }
+
+    [Function("healthz")]
+    public HttpResponseData RunHealthz(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
+    {
+        _logger.LogInformation("Healthz check");
+
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+
+        return response;
     }
 }

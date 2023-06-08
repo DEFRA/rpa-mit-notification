@@ -3,12 +3,12 @@ using Azure.Data.Tables;
 using RPA.MIT.Notification.Function.Models;
 using RPA.MIT.Notification.Function.Services;
 using RPA.MIT.Notification.Function.Validation;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Azure.Functions.Worker;
 
 namespace RPA.MIT.Notification
 {
@@ -16,23 +16,23 @@ namespace RPA.MIT.Notification
     {
         private readonly INotifyService _notifyService;
         private readonly IConfiguration _configuration;
-
+        private readonly ILogger _logger;
         private readonly IEventQueueService _eventQueueService;
 
-        public Notification(INotifyService notifyService, IConfiguration configuration, IEventQueueService eventQueueService)
+        public Notification(INotifyService notifyService, IConfiguration configuration, IEventQueueService eventQueueService, ILoggerFactory loggerFactory)
         {
             _notifyService = notifyService;
             _configuration = configuration;
             _eventQueueService = eventQueueService;
+            _logger = loggerFactory.CreateLogger<Notification>();
         }
 
-        [FunctionName("SendNotification")]
+        [Function("SendNotification")]
         public async Task CreateEvent(
             [QueueTrigger("invoicenotification", Connection = "QueueConnectionString")] string notificationMsg,
-            [Table("invoicenotification", Connection = "TableConnectionString")] TableClient tableClient,
-            ILogger log)
+            [TableInput("invoicenotification", Connection = "TableConnectionString")] TableClient tableClient)
         {
-            log.LogInformation("MIT Notification queue trigger function processing: {notificationMsg}", notificationMsg);
+            _logger.LogInformation("MIT Notification queue trigger function processing: {notificationMsg}", notificationMsg);
 
             try
             {
@@ -40,7 +40,7 @@ namespace RPA.MIT.Notification
 
                 if (!isValid)
                 {
-                    log.LogError("Invalid message: {notificationMsg}", notificationMsg);
+                    _logger.LogError("Invalid message: {notificationMsg}", notificationMsg);
                     return;
                 }
 
@@ -53,19 +53,19 @@ namespace RPA.MIT.Notification
 
                 if (templateId == null)
                 {
-                    log.LogError("Template not found for action: {action}", templateName);
+                    _logger.LogError("Template not found for action: {action}", templateName);
                     await _eventQueueService.CreateMessage(id, "failed", "notification", "Template not found", notificationMsg);
                     return;
                 }
 
                 if (emailAddress == null)
                 {
-                    log.LogError("emailAddress not found for scheme: {scheme}", scheme);
+                    _logger.LogError("emailAddress not found for scheme: {scheme}", scheme);
                     await _eventQueueService.CreateMessage(id, "failed", "notification", "emailAddress not found", notificationMsg);
                     return;
                 }
 
-                log.LogInformation("Sending email for incoming message id: {id}", id);
+                _logger.LogInformation("Sending email for incoming message id: {id}", id);
 
                 var notifyResponse = _notifyService.SendEmail(emailAddress, templateId, notificationMsgObj.Data);
                 await _eventQueueService.CreateMessage(id, "sent", "notification", "Email sent", notificationMsg);
@@ -82,18 +82,17 @@ namespace RPA.MIT.Notification
             }
             catch (Exception exc)
             {
-                log.LogError(exc, "Error occurred processing incoming message");
+                _logger.LogError(exc, "Error occurred processing incoming message");
                 throw;  // This will force a retry to prevent losing the message.
             }
         }
 
-        [FunctionName("CheckEmailStatus")]
+        [Function("CheckEmailStatus")]
         public async Task CheckEmailStatus(
-            [TimerTrigger("%TriggerTimerInterval%", RunOnStartup = true)] TimerInfo myTimer,
-            [Table("invoicenotification", Connection = "TableConnectionString")] TableClient tableClient,
-            ILogger log)
+            [TimerTrigger("%TriggerTimerInterval%")] TimerInfo myTimer,
+            [TableInput("invoicenotification", Connection = "TableConnectionString")] TableClient tableClient)
         {
-            log.LogInformation("CheckEmailStatus function executed at: {time}", DateTime.Now);
+            _logger.LogInformation("CheckEmailStatus function executed at: {time}", DateTime.Now);
 
             var queryResultsFilter = tableClient.Query<NotificationEntity>(filter: "Status eq 'sent'");
 
@@ -101,21 +100,21 @@ namespace RPA.MIT.Notification
             {
                 foreach (var result in queryResultsFilter)
                 {
-                    log.LogInformation($"Checking email status for {result.NotifyId}");
+                    _logger.LogInformation($"Checking email status for {result.NotifyId}");
                     var emailStatus = _notifyService.GetNotification(result.NotifyId);
-                    log.LogInformation($"Email status for {result.NotifyId} = {emailStatus.status}");
+                    _logger.LogInformation($"Email status for {result.NotifyId} = {emailStatus.status}");
 
                     TableEntity entity;
                     switch (emailStatus.status)
                     {
                         case "delivered":
-                            log.LogInformation($"Email status for {result.NotifyId} is 'delivered' entity is removed from table.");
+                            _logger.LogInformation($"Email status for {result.NotifyId} is 'delivered' entity is removed from table.");
                             tableClient.DeleteEntity(result.PartitionKey, result.RowKey);
                             await _eventQueueService.CreateMessage(result.PartitionKey, "delivered", "notification", "Email delivered", result.Data);
                             break;
 
                         case "permanent-failure":
-                            log.LogWarning($"Email status for {result.NotifyId} is 'permanent-failure'");
+                            _logger.LogWarning($"Email status for {result.NotifyId} is 'permanent-failure'");
                             entity = tableClient.GetEntity<TableEntity>(result.PartitionKey, result.RowKey);
                             entity["Status"] = "Permanent Failure";
                             tableClient.UpdateEntity(entity, ETag.All, TableUpdateMode.Replace);
@@ -123,7 +122,7 @@ namespace RPA.MIT.Notification
                             break;
 
                         case "temporary-failure":
-                            log.LogWarning($"Email status for {result.NotifyId} is 'temporary-failure'");
+                            _logger.LogWarning($"Email status for {result.NotifyId} is 'temporary-failure'");
                             entity = tableClient.GetEntity<TableEntity>(result.PartitionKey, result.RowKey);
                             entity["Status"] = "Temporary Failure";
                             tableClient.UpdateEntity(entity, ETag.All, TableUpdateMode.Replace);
@@ -131,7 +130,7 @@ namespace RPA.MIT.Notification
                             break;
 
                         case "technical-failure":
-                            log.LogWarning($"Email status for {result.NotifyId} is 'technical-failure'");
+                            _logger.LogWarning($"Email status for {result.NotifyId} is 'technical-failure'");
                             entity = tableClient.GetEntity<TableEntity>(result.PartitionKey, result.RowKey);
                             entity["Status"] = "Technical Failure";
                             tableClient.UpdateEntity(entity, ETag.All, TableUpdateMode.Replace);
@@ -139,7 +138,7 @@ namespace RPA.MIT.Notification
                             break;
 
                         default:
-                            log.LogWarning($"Email status for {result.NotifyId} not found");
+                            _logger.LogWarning($"Email status for {result.NotifyId} not found");
                             await _eventQueueService.CreateMessage(result.PartitionKey, "failed", "notification", "Email status not found", result.Data);
                             break;
                     }
