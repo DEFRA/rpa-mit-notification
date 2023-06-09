@@ -1,20 +1,18 @@
 services:
   rpa-mit-notification:
-    build:
-      context: .
-      target: production
+    build: .
     image: rpa-mit-notification
     container_name: rpa-mit-notification
     environment:
       APPINSIGHTS_CLOUDROLE: rpa-mit-notification-local
       FUNCTIONS_WORKER_RUNTIME: dotnet-isolated
-      AzureWebJobsStorage: UseDevelopmentStorage=true
-      QueueConnectionString: UseDevelopmentStorage=true
-      TableConnectionString: UseDevelopmentStorage=true
+      AzureWebJobsStorage:
+      QueueConnectionString:
+      TableConnectionString:
       EventQueueName: event
       AzureWebJobsSecretStorageType: files
       NotifyApiKey:
-      TriggerTimerInterval: 0 */2 * * * *,
+      TriggerTimerInterval: 0 */2 * * * *
       PartitionKey: MIT_Notifications
       templatesapproval: 8b70257a-a41c-4260-b9ce-2c6596246fb0
       templatesapproved: 30e785fe-75c7-40cd-aced-8d0856ff57ac
