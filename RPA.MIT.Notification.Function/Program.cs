@@ -10,40 +10,32 @@ using Notify.Client;
 using Notify.Interfaces;
 using RPA.MIT.Notification.Function.Services;
 
-namespace FunctionApp;
-
-static class Program
-{
-    static async Task Main()
+var host = new HostBuilder()
+    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureAppConfiguration(config => config
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+                    .AddEnvironmentVariables())
+    .ConfigureServices(services =>
     {
-        var host = new HostBuilder()
-            .ConfigureFunctionsWorkerDefaults()
-            .ConfigureAppConfiguration(config => config
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                            .AddEnvironmentVariables())
-            .ConfigureServices(services =>
-            {
-                Console.WriteLine("Startup.ConfigureServices() called");
-                var serviceProvider = services.BuildServiceProvider();
+        Console.WriteLine("Startup.ConfigureServices() called");
+        var serviceProvider = services.BuildServiceProvider();
 
-                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
-                services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
-                services.AddSingleton<INotifyService, NotifyService>();
-                services.AddSingleton<IEventQueueService>(_ =>
-                {
-                    var eventQueueClient = new QueueClient(configuration.GetSection("QueueConnectionString").Value, configuration.GetSection("EventQueueName").Value);
-                    return new EventQueueService(eventQueueClient);
-                });
-                services.AddSingleton<INotificationTable>(_ =>
-                {
-                    var tableClient = new TableClient(configuration.GetSection("TableConnectionString").Value, "invoicenotification");
-                    return new NotificationTable(tableClient);
-                });
-            })
-            .Build();
+        services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
+        services.AddSingleton<INotifyService, NotifyService>();
+        services.AddSingleton<IEventQueueService>(_ =>
+        {
+            var eventQueueClient = new QueueClient(configuration.GetSection("QueueConnectionString").Value, configuration.GetSection("EventQueueName").Value);
+            return new EventQueueService(eventQueueClient);
+        });
+        services.AddSingleton<INotificationTable>(_ =>
+        {
+            var tableClient = new TableClient(configuration.GetSection("TableConnectionString").Value, "invoicenotification");
+            return new NotificationTable(tableClient);
+        });
+    })
+    .Build();
 
-        await host.RunAsync();
-    }
-}
+host.Run();
