@@ -5,7 +5,7 @@ using RPA.MIT.Notification.Function.Services;
 using Moq;
 using Xunit;
 
-namespace RPA.MIT.Notification.Function.Test;
+namespace RPA.MIT.Notification.Function.Tests;
 
 public class EventQueueServiceTests
 {

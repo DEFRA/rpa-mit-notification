@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace RPA.MIT.Notification.Function.Test.Services
+namespace RPA.MIT.Notification.Function.Tests.Services
 {
     public class NotifyServiceTests
     {

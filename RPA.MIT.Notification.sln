@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPA.MIT.Notification.Function", "RPA.MIT.Notification.Function\RPA.MIT.Notification.Function.csproj", "{1D256A86-CDE0-4C2E-BB28-5937989882D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPA.MIT.Notification.Function.Test", "RPA.MIT.Notification.Function.Test\RPA.MIT.Notification.Function.Test.csproj", "{D6C27646-9092-49A8-BFC3-09FE65ADD670}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPA.MIT.Notification.Function.Tests", "RPA.MIT.Notification.Function.Tests\RPA.MIT.Notification.Function.Tests.csproj", "{D6C27646-9092-49A8-BFC3-09FE65ADD670}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{58894276-03F1-4A8C-AE8D-E3B914AEC630}"
 	ProjectSection(SolutionItems) = preProject
