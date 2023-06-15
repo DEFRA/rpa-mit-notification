@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS production
+# development
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS development
 
 RUN mkdir -p /home/dotnet/RPA.MIT.Notification.Function.Tests/
 RUN mkdir -p /home/dotnet/RPA.MIT.Notification.Function.Tests/ /home/dotnet/RPA.MIT.Notification.Function/
