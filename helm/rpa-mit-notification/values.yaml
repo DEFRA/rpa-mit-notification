@@ -55,25 +55,25 @@ container:
   schemasBPS: steve.dickinson@defra.gov.uk
   schemasAP: steve.dickinson@defra.gov.uk
 
-service:
-  port: 80
-  type: ClusterIP
+#service:
+#  port: 80
+#  type: ClusterIP
 
 ingress:
   class: nginx
   endpoint: rpa-mit-notification
-  server: example.com
+  server: value.replaced.from.app.config
 
-livenessProbe:
-  path: /healthz
-  port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
-  failureThreshold: 3
+#livenessProbe:
+#  path: /healthz
+#  port: 3000
+#  initialDelaySeconds: 60
+#  periodSeconds: 30
+#  failureThreshold: 3
 
-readinessProbe:
-  path: /healthy
-  port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
-  failureThreshold: 3
+#readinessProbe:
+#  path: /healthy
+#  port: 3000
+#  initialDelaySeconds: 60
+#  periodSeconds: 30
+#  failureThreshold: 3
