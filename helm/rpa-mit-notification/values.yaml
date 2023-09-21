@@ -64,16 +64,16 @@ ingress:
   endpoint: rpa-mit-notification
   server: value.replaced.from.app.config
 
-livenessProbe:
-  path: /healthz
-  port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
-  failureThreshold: 3
+#livenessProbe:
+#  path: /healthz
+#  port: 3000
+#  initialDelaySeconds: 60
+#  periodSeconds: 30
+#  failureThreshold: 3
 
-readinessProbe:
-  path: /healthy
-  port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
-  failureThreshold: 3
+#readinessProbe:
+#  path: /healthy
+#  port: 3000
+#  initialDelaySeconds: 60
+#  periodSeconds: 30
+#  failureThreshold: 3
