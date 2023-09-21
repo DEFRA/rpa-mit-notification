@@ -4,7 +4,7 @@ This is the MIT Notifications project. See the following [wiki](https://dev.azur
 
 # Getting Started
 
-Clone this [repo](https://defragovuk@dev.azure.com/defragovuk/DEFRA-EST/_git/RPA.MIT.Notification).
+Clone this [repo](https://github.com/DEFRA/rpa-mit-notification).
 
 # Local setup
 
