@@ -33,27 +33,28 @@ deployment:
   restartPolicy: Always
 
 container:
+  imagePullPolicy: IfNotPresent
   requestMemory: 120Mi
-  requestCpu: 120m
+  requestCpu: 5m
   limitMemory: 120Mi
   limitCpu: 120m
   port: 3000
-  azureWebJobsStorage:
-  queueConnectionString:
-  tableConnectionString:
-  notifyApiKey:
-  functionsWorkerRuntime: dotnet-isolated
-  eventQueueName: event
-  azureWebJobsSecretStorageType: files
-  triggerTimerInterval: 0 */2 * * * *
-  partitionKey: MIT_Notifications
-  templatesApproval: 8b70257a-a41c-4260-b9ce-2c6596246fb0
-  templatesApproved: 30e785fe-75c7-40cd-aced-8d0856ff57ac
-  templatesError: 5019017c-ac20-42bb-9fad-d72ed135d5bb
-  templatesRejected: b7b06564-4a73-4a94-94e1-61ac58fbc7d2
-  templatesUpload: 88709ce9-b2b4-4175-a8fa-d0cf354e58b6
-  schemasBPS: steve.dickinson@defra.gov.uk
-  schemasAP: steve.dickinson@defra.gov.uk
+#  azureWebJobsStorage:
+#  queueConnectionString:
+#  tableConnectionString:
+#  notifyApiKey:
+#  functionsWorkerRuntime: dotnet-isolated
+#  eventQueueName: event
+#  azureWebJobsSecretStorageType: files
+#  triggerTimerInterval: 0 */2 * * * *
+#  partitionKey: MIT_Notifications
+#  templatesApproval: 8b70257a-a41c-4260-b9ce-2c6596246fb0
+#  templatesApproved: 30e785fe-75c7-40cd-aced-8d0856ff57ac
+#  templatesError: 5019017c-ac20-42bb-9fad-d72ed135d5bb
+#  templatesRejected: b7b06564-4a73-4a94-94e1-61ac58fbc7d2
+#  templatesUpload: 88709ce9-b2b4-4175-a8fa-d0cf354e58b6
+#  schemasBPS: steve.dickinson@defra.gov.uk
+#  schemasAP: steve.dickinson@defra.gov.uk
 
 #service:
 #  port: 80
@@ -64,16 +65,16 @@ ingress:
   endpoint: rpa-mit-notification
   server: value.replaced.from.app.config
 
-#livenessProbe:
-#  path: /healthz
-#  port: 3000
-#  initialDelaySeconds: 60
-#  periodSeconds: 30
-#  failureThreshold: 3
+livenessProbe:
+  path: /healthz
+  port: 3000
+  initialDelaySeconds: 60
+  periodSeconds: 30
+  failureThreshold: 3
 
-#readinessProbe:
-#  path: /healthy
-#  port: 3000
-#  initialDelaySeconds: 60
-#  periodSeconds: 30
-#  failureThreshold: 3
+readinessProbe:
+  path: /healthy
+  port: 3000
+  initialDelaySeconds: 60
+  periodSeconds: 30
+  failureThreshold: 3
