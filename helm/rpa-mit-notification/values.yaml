@@ -1,5 +1,4 @@
-environment: production
-environmentCode:
+environment: development
 name: rpa-mit-notification
 namespace: ffc-rpa
 workstream: ffc-rpa
@@ -20,7 +19,7 @@ containerConfigMap:
   name: rpa-mit-notification-config-map
 
 containerSecret:
-  name: rpa-mit-notification-secret
+  name: rpa-mit-notification-container-secret
   type: Opaque
 
 deployment:
