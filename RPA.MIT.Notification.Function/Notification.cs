@@ -85,6 +85,7 @@ namespace RPA.MIT.Notification
             }
         }
 
+        /*
         [Function("CheckEmailStatus")]
         public async Task CheckEmailStatus(
             [TimerTrigger("%TriggerTimerInterval%")] TimerInfo myTimer)
@@ -142,5 +143,6 @@ namespace RPA.MIT.Notification
                 }
             }
         }
+        */
     }
 }
