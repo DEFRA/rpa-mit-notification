@@ -24,7 +24,13 @@ var host = new HostBuilder()
         var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
         var apiKey = configuration.GetSection("NotifyApiKey").Value;
-        Console.WriteLine("Startup apiKey=" + (string.IsNullOrEmpty(apiKey) ? "null" : apiKey.Substring(0, 10)));
+        Console.WriteLine("Startup apiKey=" + (string.IsNullOrEmpty(apiKey) ? "null" : apiKey.Substring(0, 40)));
+
+        var queueConnectionString = configuration.GetSection("QueueConnectionString").Value;
+        Console.WriteLine("Startup queueConnectionString=" + (string.IsNullOrEmpty(queueConnectionString) ? "null" : queueConnectionString.Substring(0, 60)));
+
+        var eventQueueName = configuration.GetSection("EventQueueName").Value;
+        Console.WriteLine("Startup eventQueueName=" + (string.IsNullOrEmpty(eventQueueName) ? "null" : eventQueueName));
 
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
