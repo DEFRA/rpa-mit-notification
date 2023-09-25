@@ -87,11 +87,13 @@ namespace RPA.MIT.Notification
 
         [Function("CheckConfig")]
         public async Task CheckConfig(
-            [TimerTrigger("%TriggerTimerInterval%")] TimerInfo myTimer)
+            [TimerTrigger("0 */2 * * * *")] TimerInfo myTimer)
         {
+            Console.WriteLine("CheckConfig function executed - console");
             _logger.LogInformation("CheckConfig function executed at: {time}", DateTime.Now);
             var queueConnString = _configuration.GetSection("QueueConnectionString").Value;
             _logger.LogInformation("CheckConfig queueConnectionString=" + (string.IsNullOrEmpty(queueConnString) ? "null" : queueConnString.Substring(0,40)));
+            Console.WriteLine("CheckConfig queueConnectionString - console=" + (string.IsNullOrEmpty(queueConnString) ? "null" : queueConnString.Substring(0,40)));
         }
 
         /*
