@@ -91,7 +91,7 @@ namespace RPA.MIT.Notification
         {
             _logger.LogInformation("CheckConfig function executed at: {time}", DateTime.Now);
             var queueConnString = _configuration.GetSection("QueueConnectionString").Value;
-            _logger.LogInformation("CheckConfig queueConnString=" + (string.IsNullOrEmpty(queueConnString) ? "null" : queueConnString.Substring(0,40)));
+            _logger.LogInformation("CheckConfig queueConnectionString=" + (string.IsNullOrEmpty(queueConnString) ? "null" : queueConnString.Substring(0,40)));
         }
 
         /*
