@@ -23,6 +23,9 @@ var host = new HostBuilder()
 
         var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
+        var apiKey = configuration.GetSection("NotifyApiKey").Value;
+        Console.WriteLine("Startup apiKey=" + (string.IsNullOrEmpty(apiKey) ? "null" : apiKey.Substring(0, 10)));
+
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
         services.AddSingleton<IEventQueueService>(_ =>
