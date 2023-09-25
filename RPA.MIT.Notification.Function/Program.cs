@@ -27,7 +27,7 @@ var host = new HostBuilder()
         Console.WriteLine("Startup apiKey=" + (string.IsNullOrEmpty(apiKey) ? "null" : apiKey.Substring(0, 40)));
 
         var queueConnectionString = configuration.GetSection("QueueConnectionString").Value;
-        Console.WriteLine("Startup queueConnectionString=" + (string.IsNullOrEmpty(queueConnectionString) ? "null" : queueConnectionString.Substring(0, 60)));
+        Console.WriteLine("Startup queueConnectionString=" + (string.IsNullOrEmpty(queueConnectionString) ? "null" : queueConnectionString.Substring(0, 90)));
 
         var eventQueueName = configuration.GetSection("EventQueueName").Value;
         Console.WriteLine("Startup eventQueueName=" + (string.IsNullOrEmpty(eventQueueName) ? "null" : eventQueueName));

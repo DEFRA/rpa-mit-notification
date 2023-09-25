@@ -38,7 +38,7 @@ container:
   requestCpu: 5m
   limitMemory: 120Mi
   limitCpu: 120m
-  port: 3000
+  port: 3001
   azureWebJobsStorage:
   queueConnectionString:
   tableConnectionString:
@@ -68,7 +68,7 @@ ingress:
 livenessProbe:
   #path: /healthz
   path: /
-  port: 3000
+  port: 3001
   initialDelaySeconds: 60
   periodSeconds: 30
   failureThreshold: 3
@@ -76,7 +76,7 @@ livenessProbe:
 readinessProbe:
 #  path: /healthy
   path: /
-  port: 3000
+  port: 3001
   initialDelaySeconds: 60
   periodSeconds: 30
   failureThreshold: 3
