@@ -86,7 +86,7 @@ namespace RPA.MIT.Notification
         }
 
         [Function("CheckConfig")]
-        public async Task CheckConfig(
+        public void CheckConfig(
             [TimerTrigger("0 */2 * * * *")] TimerInfo myTimer)
         {
             Console.WriteLine("CheckConfig function executed - console");
@@ -94,6 +94,13 @@ namespace RPA.MIT.Notification
             var queueConnString = _configuration.GetSection("QueueConnectionString").Value;
             _logger.LogInformation("CheckConfig queueConnectionString=" + (string.IsNullOrEmpty(queueConnString) ? "null" : queueConnString.Substring(0,40)));
             Console.WriteLine("CheckConfig queueConnectionString - console=" + (string.IsNullOrEmpty(queueConnString) ? "null" : queueConnString.Substring(0,40)));
+        }
+
+        [Function("CheckConfigStatic")]
+        public static void CheckConfigStatic(
+            [TimerTrigger("0 */2 * * * *")] TimerInfo myTimer)
+        {
+            Console.WriteLine("CheckConfigStatic function executed - console");
         }
 
         /*
