@@ -31,7 +31,7 @@ public class NotifyService : INotifyService
         foreach (var j in messagePersonalisation)
         {
             var jp = (JProperty)j;
-            var j1 = jp[0];
+            var j1 = jp.Value;
 
             personalisation.Add(jp.Name, j1.ToString());
         }
