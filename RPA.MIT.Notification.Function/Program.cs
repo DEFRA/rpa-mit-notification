@@ -12,11 +12,11 @@ using Notify.Interfaces;
 using RPA.MIT.Notification.Function.Services;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
     .ConfigureAppConfiguration(config => config
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables())
+    .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices(services =>
     {
         Console.WriteLine("Startup.ConfigureServices() called");
