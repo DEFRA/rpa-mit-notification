@@ -67,7 +67,13 @@ namespace RPA.MIT.Notification
                 _logger.LogInformation("Sending email for incoming message id: {id}", id);
 
                 var notifyResponse = _notifyService.SendEmail(emailAddress, templateId, notificationMsgObj.Data);
+
+                _logger.LogInformation("Sent email for incoming message id: {id}", id);
+
                 await _eventQueueService.CreateMessage(id, "sent", "notification", "Email sent", notificationMsg);
+
+                _logger.LogInformation("Sent queue message for incoming message id: {id}", id);
+
                 await _notificationTable.Add(new NotificationEntity()
                 {
                     PartitionKey = id,
@@ -77,6 +83,7 @@ namespace RPA.MIT.Notification
                     RetryCount = 0,
                     Data = notificationMsg
                 });
+                _logger.LogInformation("Added table row for incoming message id: {id}", id);
             }
             catch (Exception exc)
             {
