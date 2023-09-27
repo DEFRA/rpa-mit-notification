@@ -45,6 +45,13 @@ The easiest way to build the project is with VS2022. It should download all requ
 
 Run the tests using the VS2022 Test Explorer.
 
+To run locally in Docker, run:
+```docker-compose -f docker-compose.local.yaml up```
+
+(Homepage will be accessible on http://localhost:3000 to prove the Function App is running)
+
+Since Azurite is spawned from the docker-compose.local.yaml, you may lose state in between runs so might need to create the above queues in Azurite.
+
 Post a message to the invoicenotification queue. Here is a sample message:
 
 ```
@@ -66,6 +73,8 @@ Post a message to the invoicenotification queue. Here is a sample message:
 # Gov Notify
 
 You will need a [Gov Notify account] (https://www.notifications.service.gov.uk/) to view the Notify templates that are used. Each template has an id. Each template id is mapped via the Action property of the incoming message.
+
+If using an API key that is a 'team' key, you will need to be added to the 'team' by whoever owns the API key in order to send emails to yourself.
 
 # Code check-in
 
