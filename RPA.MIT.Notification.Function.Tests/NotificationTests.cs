@@ -13,31 +13,35 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
 
 namespace RPA.MIT.Notification.Function.Tests
 {
     public class NotificationTests
     {
-        private readonly Mock<INotificationTable> _mockNotificationTable;
+        private readonly Mock<NotificationTable> _mockNotificationTable;
         private readonly Mock<INotifyService> _mockNotifyService;
         private readonly Mock<IEventQueueService> _mockEventQueueService;
         private readonly Mock<IConfiguration> _mockConfiguration;
         private readonly Mock<TableClient> _mockTableClient;
-        private readonly Mock<ILoggerFactory> _mockLogger;
+        private readonly Microsoft.Extensions.Logging.ILoggerFactory _loggerFactory;
         private readonly Notification _sut;
 
         public NotificationTests()
         {
-            _mockNotificationTable = new Mock<INotificationTable>();
             _mockNotifyService = new Mock<INotifyService>();
             _mockEventQueueService = new Mock<IEventQueueService>();
             _mockConfiguration = new Mock<IConfiguration>();
-            _mockLogger = new Mock<ILoggerFactory>();
+            _loggerFactory = LoggerFactory.Create(c => c
+               .AddConsole()
+               .SetMinimumLevel(LogLevel.Debug)
+               );
             _mockTableClient = new Mock<TableClient>();
+            _mockNotificationTable = new Mock<NotificationTable>(_mockTableClient.Object);
 
             _mockConfiguration.Setup(x => x["schemasAP"]).Returns("john.smith@defra.gov.uk");
             _mockConfiguration.Setup(x => x["templatesApproved"]).Returns("00000000-0000-0000-0000-000000000000");
-            _sut = new  Notification(_mockNotificationTable.Object, _mockNotifyService.Object, _mockConfiguration.Object, _mockEventQueueService.Object, _mockLogger.Object);
+            _sut = new  Notification(_mockNotificationTable.Object, _mockNotifyService.Object, _mockConfiguration.Object, _mockEventQueueService.Object, _loggerFactory);
         }
 
         [Fact]
@@ -79,7 +83,7 @@ namespace RPA.MIT.Notification.Function.Tests
         [Fact]
         public async System.Threading.Tasks.Task CreateEvent_Exception_Returns_Null_NotificationEntity()
         {
-            Notification notifyFunction = new(null, null, null, null, null);
+            Notification notifyFunction = new(null, null, null, null, _loggerFactory);
             NotificationEntity? notificationEntity = null;
             var notificationRequest = new NotificationRequest
             {
