@@ -1,0 +1,17 @@
+{{- include "ffc-helm-library.container-config-map" (list . "rpa-mit-notification.config-map") -}}
+{{- define "rpa-mit-notification.config-map" -}}
+data:
+  PORT: {{ quote .Values.container.port }}
+  APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
+  FUNCTIONS_WORKER_RUNTIME: {{ quote .Values.container.functionsWorkerRuntime }}
+  EventQueueName: {{ quote .Values.container.eventQueueName }}
+  AzureWebJobsSecretStorageType: {{ quote .Values.container.azureWebJobsSecretStorageType }}
+  TriggerTimerInterval: {{ quote .Values.container.triggerTimerInterval }}
+  PartitionKey: {{ quote .Values.container.partitionKey }}
+  templatesapproval: {{ quote .Values.container.templatesApproval }}
+  templatesapproved: {{ quote .Values.container.templatesApproved }}
+  templateserror: {{ quote .Values.container.templatesError }}
+  templatesrejected: {{ quote .Values.container.templatesRejected }}
+  schemasBPS: {{ quote .Values.container.schemasBPS }}
+  schemasAP: {{ quote .Values.container.schemasAP }}
+{{- end -}}

@@ -1,0 +1,16 @@
+version: '3.8'
+
+# This override file should be used to run automated tests in a
+# containerised environment.
+
+services:
+  rpa-mit-notification:
+    build:
+      target: development
+    image: rpa-mit-notification-development
+    container_name: rpa-mit-notification-test
+    entrypoint: dotnet test ./RPA.MIT.Notification.Function.Tests/RPA.MIT.Notification.Function.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='./test-output/'
+    volumes:
+      - ./RPAMITNotificationFunction:/home/dotnet/RPAMITNotificationFunction
+      - ./RPAMITNotificationFunction.Tests:/home/dotnet/RPAMITNotificationFunction.Tests
+      - ./test-output:/home/dotnet/RPAMITNotificationFunction.Tests/test-output

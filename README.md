@@ -4,7 +4,7 @@ This is the MIT Notifications project. See the following [wiki](https://dev.azur
 
 # Getting Started
 
-Clone this [repo](https://defragovuk@dev.azure.com/defragovuk/DEFRA-EST/_git/RPA.MIT.Notification).
+Clone this [repo](https://github.com/DEFRA/rpa-mit-notification).
 
 # Local setup
 
@@ -39,11 +39,18 @@ Install Azure Storage Explorer to create the above queues in a storage account.
 
 For local development ensure Azurite is installed. This is installed as part of VS2002.
 
+Install the VSCode Azurite extension to start / stop Azurite table, blob, file, queue services.
+
 # Build and Test
 
 The easiest way to build the project is with VS2022. It should download all required nuget dependencies.
 
 Run the tests using the VS2022 Test Explorer.
+
+To run locally in Docker, run:
+```docker-compose up```
+
+(Homepage will be accessible on http://localhost:3000 to prove the Function App is running)
 
 Post a message to the invoicenotification queue. Here is a sample message:
 
@@ -67,6 +74,8 @@ Post a message to the invoicenotification queue. Here is a sample message:
 
 You will need a [Gov Notify account] (https://www.notifications.service.gov.uk/) to view the Notify templates that are used. Each template has an id. Each template id is mapped via the Action property of the incoming message.
 
+If using an API key that is a 'team' key, you will need to be added to the 'team' by whoever owns the API key in order to send emails to yourself.
+
 # Code check-in
 
 Prior to committing changes run the following command from a cmd line within the solution folder: dotnet format whitespace --verbosity n
@@ -74,37 +83,7 @@ Prior to committing changes run the following command from a cmd line within the
 Install the VS2022 extension SonarLint. Prior to commiting changes check the Messages window for any code smells / issues that would cause the build pipeline to fail.
 
 # Cloud setup
-To create cloud infrastructure to run the project the following commands may be run:
-
-set your subscription so all activities are carried out on the right subscription: 
-```
- az account set --subscription "eeeeeeee-eeee-eeee-eeee-eeeeeeeee"
- ```
-create a resource group
-```
-az group create --name "my-resource-group" --location uksouth
-```
-create key vault
-```
-az keyvault create --name est-mit-kv-dev --resource-group my-resource-group --location uksouth
-```
-create storage account, function app, and assign identity
-```
-az storage account create --name est-mit-storage-dev --resource-group my-resource-group --location uksouth
-az functionapp create --name est-mit-notifications-dev  --resource-group my-resource-group --storage-account est-mit-storage-dev --location uksouth
-az functionapp identity assign --resource-group my-resource-group --name est-mit-notifications-dev
-```
-
-copy principal ID from above output and give permission to key vault
-```
-az keyvault set-policy --secret-permissions get list --name est-mit-kv-dev  --object-id **principalID-from-above
-```
-
-Key may be added via the command line, i.e.:
-
-```
-az keyvault secret set --vault-name "est-mit-kv-dev" --name "NotifyApiKey" --value "--api-key--"
-```
+To create the cloud infrastructure in AKS follow the guidlines on the FC Platform section of the DEFRA-EST Wiki. 
 
 
 
