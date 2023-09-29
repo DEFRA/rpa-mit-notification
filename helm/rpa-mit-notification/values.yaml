@@ -39,10 +39,6 @@ container:
   limitMemory: 120Mi
   limitCpu: 120m
   port: 3000
-  azureWebJobsStorage:
-  queueConnectionString:
-  tableConnectionString:
-  notifyApiKey:
   functionsWorkerRuntime: dotnet-isolated
   eventQueueName: event
   azureWebJobsSecretStorageType: files
@@ -55,6 +51,10 @@ container:
   templatesUpload: 88709ce9-b2b4-4175-a8fa-d0cf354e58b6
   schemasBPS: jeremy.barnsley@defra.gov.uk
   schemasAP: jeremy.barnsley@defra.gov.uk
+  notifyApiKey: seret
+  tableConnectionString: seret
+  queueConnectionString: seret
+  azureWebJobsStorage: seret
 
 service:
   port: 80
