@@ -51,10 +51,10 @@ container:
   templatesUpload: 88709ce9-b2b4-4175-a8fa-d0cf354e58b6
   schemasBPS: jeremy.barnsley@defra.gov.uk
   schemasAP: jeremy.barnsley@defra.gov.uk
-  notifyApiKey: seret
-  tableConnectionString: seret
-  queueConnectionString: seret
-  azureWebJobsStorage: seret
+  notifyApiKey: secret
+  tableConnectionString: secret
+  queueConnectionString: secret
+  azureWebJobsStorage: secret
 
 service:
   port: 80
