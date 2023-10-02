@@ -1,6 +1,6 @@
 apiVersion: v2
-description: Test Azure Function App in container
-name: ffc-techspike-function-taskmanager
+description: A Helm chart for Kubernetes
+name: rpa-mit-notification
 # this version is automatically updated in the build pipeline
 version: 1.0.0
 dependencies:
