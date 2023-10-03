@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
+using Azure.Messaging.ServiceBus;
 using Azure.Storage.Queues;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,12 +25,14 @@ var host = new HostBuilder()
 
         var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
+        services.AddScoped<ISenderFactory, SenderFactory>();
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
         services.AddSingleton<IEventQueueService>(_ =>
         {
-            var eventQueueClient = new QueueClient(configuration.GetSection("QueueConnectionString").Value, configuration.GetSection("EventQueueName").Value);
-            return new EventQueueService(eventQueueClient);
+            var serviceBusClient = new ServiceBusClient(configuration.GetSection("ServiceBusEventConnectionString").Value);
+            var queueName = configuration.GetSection("ServiceBusEventQueueName").Value;
+            return new EventQueueService(serviceBusClient, queueName, new SenderFactory());
         });
         services.AddSingleton<INotificationTable>(_ =>
         {

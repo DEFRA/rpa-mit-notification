@@ -2,17 +2,21 @@ using System;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Azure.Storage.Queues;
+using Azure.Messaging.ServiceBus;
 
 namespace RPA.MIT.Notification.Function.Services;
 
 public class EventQueueService : IEventQueueService
 {
-    private readonly QueueClient _queueClient;
+    private readonly ServiceBusClient _serviceBusClient;
+    private readonly string _queueName;
+    private readonly ISenderFactory _senderFactory;
 
-    public EventQueueService(QueueClient queueClient)
+    public EventQueueService(ServiceBusClient serviceBusClient, string queueName, ISenderFactory senderFactory)
     {
-        _queueClient = queueClient;
+        _serviceBusClient = serviceBusClient;
+        _queueName = queueName;
+        _senderFactory = senderFactory;
     }
 
     public async Task CreateMessage(string id, string status, string action, string message, string data)
@@ -35,7 +39,8 @@ public class EventQueueService : IEventQueueService
             }
         };
 
-        var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(eventRequest));
-        await _queueClient.SendMessageAsync(Convert.ToBase64String(bytes));
+        var eventStr = JsonSerializer.Serialize(eventRequest);
+        var serviceBusSender = _senderFactory.CreateSender(_serviceBusClient, _queueName);
+        await serviceBusSender.SendMessageAsync(new ServiceBusMessage(eventStr));
     }
 }

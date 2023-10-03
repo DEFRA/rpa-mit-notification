@@ -31,15 +31,20 @@ Example values can be found on the project[Wiki](https://dev.azure.com/defragovu
 
 # Storage Account Setup
 
-The project requires a storage account and the following queues created:
+The project requires a storage account with the following table created:
 - invoicenotification
-- invoicenotification-poison
 
-Install Azure Storage Explorer to create the above queues in a storage account.
+Install Azure Storage Explorer to create the above table in a storage account.
 
 For local development ensure Azurite is installed. This is installed as part of VS2002.
 
 Install the VSCode Azurite extension to start / stop Azurite table, blob, file, queue services.
+
+# Service Bus
+
+The project requires the following Service Bus queues to be created:
+- rpa-mit-notification
+- rpa-mit-events
 
 # Build and Test
 
@@ -59,7 +64,7 @@ Post a message to the invoicenotification queue. Here is a sample message:
 "Action": "approval",
 "Data":
     {
-    "invoiceId": "123456789",
+    "invoiceId": "12345",
     "link": "https://google.com",
     "name": "Steve Dickinson",
     "schemeType": "bps",
