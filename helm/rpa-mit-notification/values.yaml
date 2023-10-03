@@ -40,7 +40,7 @@ container:
   limitCpu: 120m
   port: 3000
   functionsWorkerRuntime: dotnet-isolated
-  eventQueueName: event
+  ServiceBusEventQueueName: rpa-mit-events
   azureWebJobsSecretStorageType: files
   triggerTimerInterval: 0 */2 * * * *
   partitionKey: MIT_Notifications
@@ -53,7 +53,8 @@ container:
   schemasAP: jeremy.barnsley@defra.gov.uk
   notifyApiKey: secret
   tableConnectionString: secret
-  queueConnectionString: secret
+  serviceBusNotificationConnectionString: secret
+  serviceBusEventConnectionString: secret
   azureWebJobsStorage: secret
 
 service:
