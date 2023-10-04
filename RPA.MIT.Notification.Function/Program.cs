@@ -30,11 +30,13 @@ var host = new HostBuilder()
         {
             // Constructors are slightly different dpending if using Managed Identity or SAS connection string
             var managedIdentityNamespace = configuration.GetSection("ServiceBusEventConnectionString:fullyQualifiedNamespace").Value;
+            Console.WriteLine("Startup ServiceBus endpoint = " + managedIdentityNamespace);
             var connectionString = configuration.GetSection("ServiceBusEventConnectionString").Value;
             var serviceBusClient = string.IsNullOrEmpty(managedIdentityNamespace)
                 ? new ServiceBusClient(connectionString)
                 : new ServiceBusClient(managedIdentityNamespace, new DefaultAzureCredential()); // ManagedIdentityCredential());
             var queueName = configuration.GetSection("ServiceBusEventQueueName").Value;
+            Console.WriteLine("Startup ServiceBus queueName = " + queueName);
             return new EventQueueService(serviceBusClient, queueName, new SenderFactory());
         });
         services.AddSingleton<INotificationTable>(_ =>
