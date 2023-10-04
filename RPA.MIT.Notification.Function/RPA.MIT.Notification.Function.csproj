@@ -5,7 +5,8 @@
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <UserSecretsId>18d3a4ac-c0fb-4393-8d8b-d151503caa66</UserSecretsId>
     <OutputType>Exe</OutputType>
-  </PropertyGroup>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{8DFDE7EE-2E89-4B3A-88D5-4980F189EFB8}</ProjectGuid>  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GovukNotify" Version="6.1.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
