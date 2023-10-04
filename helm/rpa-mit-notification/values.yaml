@@ -51,7 +51,7 @@ container:
   schemasBPS: jeremy.barnsley@defra.gov.uk
   schemasAP: jeremy.barnsley@defra.gov.uk
   ServiceBusNotificationConnectionString__fullyQualifiedNamespace: SNDFFCINFSB1001.servicebus.windows.net
-  ServiceBusEventNotificationName: rpa-mit-notification
+  ServiceBusNotificationQueueName: rpa-mit-notification
   ServiceBusEventConnectionString__fullyQualifiedNamespace: SNDFFCINFSB1001.servicebus.windows.net
   ServiceBusEventQueueName: rpa-mit-events
   notifyApiKey: secret
