@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Azure.Storage.Queues;
 using RPA.MIT.Notification.Function.Services;
 using Moq;
 using Xunit;

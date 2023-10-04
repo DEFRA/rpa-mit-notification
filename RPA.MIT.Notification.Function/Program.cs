@@ -1,10 +1,8 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Azure.Data.Tables;
+using Azure.Identity;
 using Azure.Messaging.ServiceBus;
-using Azure.Storage.Queues;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,7 +28,12 @@ var host = new HostBuilder()
         services.AddSingleton<INotifyService, NotifyService>();
         services.AddSingleton<IEventQueueService>(_ =>
         {
-            var serviceBusClient = new ServiceBusClient(configuration.GetSection("ServiceBusEventConnectionString").Value);
+            // Constructors are slightly different dpending if using Managed Identity or SAS connection string
+            var managedIdentityNamespace = configuration.GetSection("ServiceBusEventConnectionString:fullyQualifiedNamespace").Value;
+            var connectionString = configuration.GetSection("ServiceBusEventConnectionString").Value;
+            var serviceBusClient = string.IsNullOrEmpty(managedIdentityNamespace)
+                ? new ServiceBusClient(connectionString)
+                : new ServiceBusClient(managedIdentityNamespace, new DefaultAzureCredential()); // ManagedIdentityCredential());
             var queueName = configuration.GetSection("ServiceBusEventQueueName").Value;
             return new EventQueueService(serviceBusClient, queueName, new SenderFactory());
         });

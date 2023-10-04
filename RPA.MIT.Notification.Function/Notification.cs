@@ -33,7 +33,7 @@ namespace RPA.MIT.Notification
 
         [Function("SendNotification")]
         public async Task CreateEvent(
-            [ServiceBusTrigger("rpa-mit-notification", Connection = "ServiceBusNotificationConnectionString")] ServiceBusReceivedMessage notificationMsg)
+            [ServiceBusTrigger("%ServiceBusNotificationQueueName%", Connection = "ServiceBusNotificationConnectionString")] ServiceBusReceivedMessage notificationMsg)
         {
             _logger.LogInformation("MIT Notification queue trigger function processing: {notificationMsg}", notificationMsg);
 
