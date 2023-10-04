@@ -1,4 +1,3 @@
-using Azure;
 using Azure.Data.Tables;
 using RPA.MIT.Notification.Function.Models;
 using RPA.MIT.Notification.Function.Services;
@@ -9,8 +8,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
-using Azure.Messaging.ServiceBus;
 using System.Text;
+using Azure.Messaging.ServiceBus;
 
 namespace RPA.MIT.Notification
 {

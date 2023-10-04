@@ -14,8 +14,9 @@ services:
       AzureWebJobsStorage: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;QueueEndpoint=http://host.docker.internal:10001/devstoreaccount1;TableEndpoint=http://host.docker.internal:10002/devstoreaccount1;
       TableConnectionString: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;QueueEndpoint=http://host.docker.internal:10001/devstoreaccount1;TableEndpoint=http://host.docker.internal:10002/devstoreaccount1;
       AzureWebJobsQueueConnectionString: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;QueueEndpoint=http://host.docker.internal:10001/devstoreaccount1;TableEndpoint=http://host.docker.internal:10002/devstoreaccount1;
-      ServiceBusNotificationConnectionString:
-      ServiceBusEventConnectionString:
+      ServiceBusNotificationConnectionString__fullyQualifiedNamespace: SNDFFCINFSB1001.servicebus.windows.net
+      ServiceBusNotificationQueueName: rpa-mit-notification
+      ServiceBusEventConnectionString__fullyQualifiedNamespace: SNDFFCINFSB1001.servicebus.windows.net
       ServiceBusEventQueueName: rpa-mit-events
       AzureWebJobsSecretStorageType: files
       NotifyApiKey: 
@@ -26,5 +27,5 @@ services:
       templatesError: 5019017c-ac20-42bb-9fad-d72ed135d5bb
       templatesRejected: b7b06564-4a73-4a94-94e1-61ac58fbc7d2
       templatesUpload: 88709ce9-b2b4-4175-a8fa-d0cf354e58b6
-      schemasBPS: steve.dickinson@defra.gov.uk
-      schemasAP: steve.dickinson@defra.gov.uk
+      schemasBPS: jeremy.barnsley@defra.gov.uk
+      schemasAP: jeremy.barnsley@defra.gov.uk
