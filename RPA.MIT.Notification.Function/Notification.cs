@@ -30,6 +30,13 @@ namespace RPA.MIT.Notification
             _logger = loggerFactory.CreateLogger<Notification>();
         }
 
+        [Function("SendTest")]
+        public void CreateTest(
+    [ServiceBusTrigger("rpa-mit-notification", Connection = "ServiceBusNotificationConnectionString")] string notificationMsg)
+        {
+            _logger.LogInformation("MIT Notification queue trigger function processing: {notificationMsg}", notificationMsg);
+        }
+
         [Function("SendNotification")]
         public async Task CreateEvent(
             [QueueTrigger("invoicenotification", Connection = "QueueConnectionString")] string notificationMsg)
