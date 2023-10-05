@@ -11,10 +11,6 @@ aadPodIdentity: true
 appInsights:
   key:
 
-azureIdentity:
-  clientID:
-  resourceID:
-
 containerConfigMap:
   name: rpa-mit-notification-config-map
 
