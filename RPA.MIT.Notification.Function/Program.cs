@@ -35,6 +35,8 @@ var host = new HostBuilder()
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         Console.WriteLine("Startup added NotificationClient");
         services.AddSingleton<INotifyService, NotifyService>();
+        var apiKey = configuration.GetSection("NotifyApiKey").Value;
+        Console.WriteLine("Startup apiKey = " + (string.IsNullOrEmpty(apiKey) ? "null" : apiKey.Substring(0, 50)));
         Console.WriteLine("Startup added NotificationService");
         services.AddSingleton<IEventQueueService>(_ =>
         {
@@ -47,8 +49,6 @@ var host = new HostBuilder()
                 : new ServiceBusClient(managedIdentityNamespace, new DefaultAzureCredential()); // ManagedIdentityCredential());
             var queueName = configuration.GetSection("ServiceBusEventQueueName").Value;
             Console.WriteLine("Startup ServiceBus queueName2 = " + queueName);
-            var apiKey = configuration.GetSection("NotifyApiKey").Value;
-            Console.WriteLine("Startup apiKey = " + (string.IsNullOrEmpty(apiKey) ? "null" : apiKey.Substring(0, 50)));
             return new EventQueueService(serviceBusClient, queueName, new SenderFactory());
         });
         Console.WriteLine("Startup added EventQueueService");
