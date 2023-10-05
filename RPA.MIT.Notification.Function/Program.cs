@@ -38,7 +38,7 @@ var host = new HostBuilder()
         var apiKey = configuration.GetSection("NotifyApiKey").Value;
         Console.WriteLine("Startup apiKey = " + (string.IsNullOrEmpty(apiKey) ? "null" : apiKey.Substring(0, 50)));
         Console.WriteLine("Startup added NotificationService");
-        /*services.AddSingleton<IEventQueueService>(_ =>
+        services.AddSingleton<IEventQueueService>(_ =>
         {
             // Constructors are slightly different dpending if using Managed Identity or SAS connection string
             var managedIdentityNamespace = configuration.GetSection("ServiceBusEventConnectionString:fullyQualifiedNamespace").Value;
@@ -58,7 +58,6 @@ var host = new HostBuilder()
             return new NotificationTable(tableClient);
         });
         Console.WriteLine("Startup added NotificationTable"); 
-        */
     })
     .Build();
 
