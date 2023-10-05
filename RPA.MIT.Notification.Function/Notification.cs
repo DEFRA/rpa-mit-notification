@@ -30,6 +30,7 @@ namespace RPA.MIT.Notification
             _logger = loggerFactory.CreateLogger<Notification>();
         }
 
+/*
         [Function("SendNotification")]
         public async Task CreateEvent(
             [ServiceBusTrigger("%ServiceBusNotificationQueueName%", Connection = "ServiceBusNotificationConnectionString")] ServiceBusReceivedMessage notificationMsg)
@@ -96,7 +97,7 @@ namespace RPA.MIT.Notification
                 _logger.LogError(exc, "Error occurred processing incoming message");
                 throw;  // This will force a retry to prevent losing the message.
             }
-        }
+        }*/
 
         [Function("CheckEmailStatus")]
         public async Task CheckEmailStatus(
