@@ -9,7 +9,8 @@ labels: {}
 aadPodIdentity: true
 
 appInsights:
-  key:
+  key: 6c1e8888-b77a-4d9d-b334-3009f76d2f62
+# est-mit-notifications-func-dev
 
 azureIdentity:
   clientID: 0a393aa3-c85c-41f0-a0c6-a947116e5a77
@@ -34,9 +35,9 @@ deployment:
 
 container:
   imagePullPolicy: IfNotPresent
-  requestMemory: 120Mi
-  requestCpu: 5m
-  limitMemory: 120Mi
+  requestMemory: 250Mi
+  requestCpu: 120m
+  limitMemory: 500Mi
   limitCpu: 120m
   port: 3000
   functionsWorkerRuntime: dotnet-isolated
