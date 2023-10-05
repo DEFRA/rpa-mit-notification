@@ -57,7 +57,7 @@ var host = new HostBuilder()
             var tableClient = new TableClient(configuration.GetSection("TableConnectionString").Value, "invoicenotification");
             return new NotificationTable(tableClient);
         });
-        Console.WriteLine("Startup added NotificationTable");
+        Console.WriteLine("Startup added NotificationTable"); 
     })
     .Build();
 
