@@ -6,8 +6,6 @@ services:
     container_name: rpa-mit-notification
     ports:
       - 3000:80
-    extra_hosts:
-      - host.docker.internal:host-gateway
     environment:
       APPINSIGHTS_CLOUDROLE: rpa-mit-notification-local
       FUNCTIONS_WORKER_RUNTIME: dotnet-isolated
