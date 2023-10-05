@@ -68,14 +68,16 @@ ingress:
   server: value.replaced.from.app.config
 
 livenessProbe:
-  path: /healthz
+#  path: /healthz
+  path: /
   port: 3000
   initialDelaySeconds: 30
   periodSeconds: 30
   failureThreshold: 3
 
 readinessProbe:
-  path: /healthy
+#  path: /healthy
+  path: /
   port: 3000
   initialDelaySeconds: 30
   periodSeconds: 30

@@ -31,8 +31,11 @@ var host = new HostBuilder()
         Console.WriteLine("Startup ServiceBus endpoint1 = " + mi);
 
         services.AddScoped<ISenderFactory, SenderFactory>();
+        Console.WriteLine("Startup added SenderFactory");
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
+        Console.WriteLine("Startup added NotificationClient");
         services.AddSingleton<INotifyService, NotifyService>();
+        Console.WriteLine("Startup added NotificationService");
         services.AddSingleton<IEventQueueService>(_ =>
         {
             // Constructors are slightly different dpending if using Managed Identity or SAS connection string
@@ -46,11 +49,13 @@ var host = new HostBuilder()
             Console.WriteLine("Startup ServiceBus queueName2 = " + queueName);
             return new EventQueueService(serviceBusClient, queueName, new SenderFactory());
         });
+        Console.WriteLine("Startup added EventQueueService");
         services.AddSingleton<INotificationTable>(_ =>
         {
             var tableClient = new TableClient(configuration.GetSection("TableConnectionString").Value, "invoicenotification");
             return new NotificationTable(tableClient);
         });
+        Console.WriteLine("Startup added NotificationTable");
     })
     .Build();
 
