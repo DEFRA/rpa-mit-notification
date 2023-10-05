@@ -47,6 +47,8 @@ var host = new HostBuilder()
                 : new ServiceBusClient(managedIdentityNamespace, new DefaultAzureCredential()); // ManagedIdentityCredential());
             var queueName = configuration.GetSection("ServiceBusEventQueueName").Value;
             Console.WriteLine("Startup ServiceBus queueName2 = " + queueName);
+            var apiKey = configuration.GetSection("NotifyApiKey").Value;
+            Console.WriteLine("Startup apiKey = " + (string.IsNullOrEmpty(apiKey) ? "null" : apiKey.Substring(0, 50)));
             return new EventQueueService(serviceBusClient, queueName, new SenderFactory());
         });
         Console.WriteLine("Startup added EventQueueService");
@@ -59,4 +61,6 @@ var host = new HostBuilder()
     })
     .Build();
 
+Console.WriteLine("Startup Build() finished");
 host.Run();
+Console.WriteLine("Startup Run");
