@@ -12,8 +12,8 @@ appInsights:
   key:
 
 azureIdentity:
-  clientID: 0a393aa3-c85c-41f0-a0c6-a947116e5a77
-  resourceID: /subscriptions/cd4e9a00-99d8-45a2-98bb-7648ef12c26d/resourcegroups/SNDFFCAKSRG1001/providers/Microsoft.ManagedIdentity/userAssignedIdentities/rpa-mit-notification
+  clientID: in-app-config
+  resourceID: in-app-config
 
 containerConfigMap:
   name: rpa-mit-notification-config-map
@@ -70,13 +70,13 @@ ingress:
 livenessProbe:
   path: /healthz
   port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
+  initialDelaySeconds: 180
+  periodSeconds: 60
   failureThreshold: 3
 
 readinessProbe:
   path: /healthy
   port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
+  initialDelaySeconds: 180
+  periodSeconds: 60
   failureThreshold: 3
