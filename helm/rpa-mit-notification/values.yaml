@@ -71,14 +71,14 @@ livenessProbe:
 #  path: /healthz
   path: /
   port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
+  initialDelaySeconds: 30
+  periodSeconds: 20
   failureThreshold: 3
 
 readinessProbe:
 #  path: /healthy
   path: /
   port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
+  initialDelaySeconds: 30
+  periodSeconds: 20
   failureThreshold: 3

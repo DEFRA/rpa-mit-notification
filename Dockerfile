@@ -1,6 +1,8 @@
 # development
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS development
 
+EXPOSE 3000
+
 RUN mkdir -p /home/dotnet/RPA.MIT.Notification.Function.Tests/
 RUN mkdir -p /home/dotnet/RPA.MIT.Notification.Function.Tests/ /home/dotnet/RPA.MIT.Notification.Function/
 COPY --chown=dotnet:dotnet ./RPA.MIT.Notification.Function.Tests/*.csproj ./RPA.MIT.Notification.Function.Tests/
