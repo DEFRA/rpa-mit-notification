@@ -8,8 +8,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
-using System.Text;
 using Azure.Messaging.ServiceBus;
+using System.Text;
 
 namespace RPA.MIT.Notification
 {
