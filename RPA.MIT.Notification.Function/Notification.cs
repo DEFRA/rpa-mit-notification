@@ -32,13 +32,13 @@ namespace RPA.MIT.Notification
 
         [Function("SendNotification")]
         public async Task CreateEvent(
-            [ServiceBusTrigger("%ServiceBusNotificationQueueName%", Connection = "ServiceBusNotificationConnectionString")] ServiceBusReceivedMessage notificationMsg)
+            [ServiceBusTrigger("%ServiceBusNotificationQueueName%", Connection = "ServiceBusNotificationConnectionString")] string notificationMsg)
         {
             _logger.LogInformation("MIT Notification queue trigger function processing: {notificationMsg}", notificationMsg);
 
             try
             {
-                var notificationStr = Encoding.UTF8.GetString(notificationMsg.Body);
+                var notificationStr = notificationMsg; // Encoding.UTF8.GetString(notificationMsg.Body);
                 var isValid = ValidateMessage.IsValid(notificationStr);
 
                 if (!isValid)
