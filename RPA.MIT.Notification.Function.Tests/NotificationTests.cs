@@ -1,6 +1,4 @@
-using Azure;
 using Azure.Data.Tables;
-using RPA.MIT.Notification;
 using RPA.MIT.Notification.Function.Models;
 using RPA.MIT.Notification.Function.Services;
 using Microsoft.Extensions.Configuration;
@@ -10,12 +8,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Notify.Models.Responses;
 using System;
-using System.Collections.Generic;
 using Xunit;
 using System.Threading.Tasks;
-using Castle.Core.Logging;
-using Azure.Messaging.ServiceBus;
-using System.Text;
 
 namespace RPA.MIT.Notification.Function.Tests
 {
@@ -61,7 +55,6 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(notificationRequest);
-            //var sbMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(new BinaryData(Encoding.UTF8.GetBytes(message)));
             await _sut.CreateEvent(message);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
@@ -80,7 +73,6 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(notificationRequest);
-            //var sbMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(new BinaryData(Encoding.UTF8.GetBytes(message)));
             await _sut.CreateEvent(message);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
@@ -101,7 +93,6 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(notificationRequest);
-            //var sbMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(new BinaryData(Encoding.UTF8.GetBytes(message)));
             await Assert.ThrowsAsync<NullReferenceException>(() => notifyFunction.CreateEvent(message));
             Assert.Null(notificationEntity);
         }
@@ -127,7 +118,6 @@ namespace RPA.MIT.Notification.Function.Tests
             string message = JsonConvert.SerializeObject(notificationRequest);
             _mockNotifyService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JObject>())).Returns(emailResponse);
 
-            //var sbMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(new BinaryData(Encoding.UTF8.GetBytes(message)));
             await _sut.CreateEvent(message);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Once);
@@ -143,7 +133,6 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(inValidRequest);
-            //var sbMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(new BinaryData(Encoding.UTF8.GetBytes(message)));
 
             await _sut.CreateEvent(message);
 

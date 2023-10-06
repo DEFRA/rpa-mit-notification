@@ -8,8 +8,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
-using Azure.Messaging.ServiceBus;
-using System.Text;
 
 namespace RPA.MIT.Notification
 {
@@ -98,7 +96,6 @@ namespace RPA.MIT.Notification
             }
         }
 
-/*
         [Function("CheckEmailStatus")]
         public async Task CheckEmailStatus(
             [TimerTrigger("%TriggerTimerInterval%")] TimerInfo myTimer)
@@ -155,6 +152,6 @@ namespace RPA.MIT.Notification
                     }
                 }
             }
-        }*/
+        }
     }
 }
