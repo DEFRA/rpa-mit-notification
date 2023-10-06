@@ -1,6 +1,4 @@
-using Azure;
 using Azure.Data.Tables;
-using RPA.MIT.Notification;
 using RPA.MIT.Notification.Function.Models;
 using RPA.MIT.Notification.Function.Services;
 using Microsoft.Extensions.Configuration;
@@ -10,10 +8,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Notify.Models.Responses;
 using System;
-using System.Collections.Generic;
 using Xunit;
 using System.Threading.Tasks;
-using Castle.Core.Logging;
 
 namespace RPA.MIT.Notification.Function.Tests
 {
@@ -29,7 +25,9 @@ namespace RPA.MIT.Notification.Function.Tests
 
         public NotificationTests()
         {
+            var emailNotifyResponse = new EmailNotificationResponse { id = "999" };
             _mockNotifyService = new Mock<INotifyService>();
+            _mockNotifyService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>())).Returns(emailNotifyResponse);
             _mockEventQueueService = new Mock<IEventQueueService>();
             _mockConfiguration = new Mock<IConfiguration>();
             _loggerFactory = LoggerFactory.Create(c => c
@@ -45,7 +43,7 @@ namespace RPA.MIT.Notification.Function.Tests
         }
 
         [Fact]
-        public void CreateEvent_UnknownAction_Returns_Null_NotificationEntity()
+        public async Task CreateEvent_UnknownAction_Returns_Null_NotificationEntity()
         {
             var notificationRequest = new NotificationRequest
             {
@@ -57,13 +55,13 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(notificationRequest);
-            _sut.CreateEvent(message);
+            await _sut.CreateEvent(message);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
         }
 
         [Fact]
-        public void CreateEvent_InvalidScheme_Returns_Null_NotificationEntity()
+        public async Task CreateEvent_InvalidScheme_Returns_Null_NotificationEntity()
         {
             var notificationRequest = new NotificationRequest
             {
@@ -75,7 +73,7 @@ namespace RPA.MIT.Notification.Function.Tests
             };
 
             string message = JsonConvert.SerializeObject(notificationRequest);
-            _sut.CreateEvent(message);
+            await _sut.CreateEvent(message);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
         }
@@ -100,7 +98,7 @@ namespace RPA.MIT.Notification.Function.Tests
         }
 
         [Fact]
-        public void Given_Function_Receive_ValidMessage_Sends_Notification_Successfully()
+        public async Task Given_Function_Receive_ValidMessage_Sends_Notification_Successfully()
         {
             EmailNotificationResponse emailResponse = new()
             {
@@ -120,19 +118,14 @@ namespace RPA.MIT.Notification.Function.Tests
             string message = JsonConvert.SerializeObject(notificationRequest);
             _mockNotifyService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JObject>())).Returns(emailResponse);
 
-            _sut.CreateEvent(message);
+            await _sut.CreateEvent(message);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Once);
         }
 
         [Fact]
-        public void Given_Function_Receive_InValidMessage_Notification_ThrowsError()
+        public async Task Given_Function_Receive_InValidMessage_Notification_ThrowsError()
         {
-            EmailNotificationResponse emailResponse = new()
-            {
-                id = Guid.NewGuid().ToString(),
-                reference = "Accounts Payable",
-            };
             var inValidRequest = new NotificationRequest
             {
                 Action = "Approved",
@@ -141,9 +134,7 @@ namespace RPA.MIT.Notification.Function.Tests
 
             string message = JsonConvert.SerializeObject(inValidRequest);
 
-            _mockNotifyService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(emailResponse);
-
-            _sut.CreateEvent(message);
+            await _sut.CreateEvent(message);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
         }
