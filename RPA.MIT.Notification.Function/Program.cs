@@ -33,7 +33,7 @@ var host = new HostBuilder()
             var connectionString = configuration.GetSection("ServiceBusEventConnectionString").Value;
             var serviceBusClient = string.IsNullOrEmpty(managedIdentityNamespace)
                 ? new ServiceBusClient(connectionString)
-                : new ServiceBusClient(managedIdentityNamespace, new DefaultAzureCredential()); // ManagedIdentityCredential());
+                : new ServiceBusClient(managedIdentityNamespace, new ManagedIdentityCredential());
             var queueName = configuration.GetSection("ServiceBusEventQueueName").Value;
             return new EventQueueService(serviceBusClient, queueName, new SenderFactory());
         });
