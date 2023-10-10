@@ -57,7 +57,7 @@ var host = new HostBuilder()
             var tableName = configuration.GetSection("NotificationTableName").Value;
             if (IsManagedIdentity(storageAccountCredential))
             {
-                var tableServiceUri = new Uri(configuration.GetSection("StorageAccount:TableServiceUri").Value);
+                var tableServiceUri = new Uri(configuration.GetSection("TableServiceUri").Value);
                 return new NotificationTable(new TableClient(tableServiceUri, tableName, new DefaultAzureCredential()));
             }
             else
