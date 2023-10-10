@@ -4,10 +4,10 @@ data:
   PORT: {{ quote .Values.container.port }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
   FUNCTIONS_WORKER_RUNTIME: {{ quote .Values.container.functionsWorkerRuntime }}
-  ServiceBusEventConnectionString__fullyQualifiedNamespace: {{ quote .Values.container.serviceBusEventConnectionString__fullyQualifiedNamespace }}
-  ServiceBusEventQueueName: {{ quote .Values.container.serviceBusEventQueueName }}
-  ServiceBusNotificationConnectionString__fullyQualifiedNamespace: {{ quote .Values.container.serviceBusNotificationConnectionString__fullyQualifiedNamespace }}
-  ServiceBusNotificationQueueName: {{ quote .Values.container.serviceBusNotificationQueueName }}
+  StorageAccount__queueServiceUri: {{ quote .Values.container.storageAccount__queueServiceUri }}
+  StorageAccount__tableServiceUri: {{ quote .Values.container.storageAccount__tableServiceUri }}
+  NotificationQueueName: {{ quote .Values.container.notificationQueueName }}
+  EventQueueName: {{ quote .Values.container.eventQueueName }}
   AzureWebJobsSecretStorageType: {{ quote .Values.container.azureWebJobsSecretStorageType }}
   TriggerTimerInterval: {{ quote .Values.container.triggerTimerInterval }}
   PartitionKey: {{ quote .Values.container.partitionKey }}

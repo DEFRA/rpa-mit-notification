@@ -36,7 +36,7 @@ container:
   imagePullPolicy: IfNotPresent
   requestMemory: 120Mi
   requestCpu: 5m
-  limitMemory: 180Mi
+  limitMemory: 120Mi
   limitCpu: 120m
   port: 3000
   functionsWorkerRuntime: dotnet-isolated
@@ -50,13 +50,13 @@ container:
   templatesUpload: 88709ce9-b2b4-4175-a8fa-d0cf354e58b6
   schemasBPS: jeremy.barnsley@defra.gov.uk
   schemasAP: jeremy.barnsley@defra.gov.uk
-  serviceBusNotificationConnectionString__fullyQualifiedNamespace: SNDFFCINFSB1001.servicebus.windows.net
-  serviceBusNotificationQueueName: rpa-mit-notification
-  serviceBusEventConnectionString__fullyQualifiedNamespace: SNDFFCINFSB1001.servicebus.windows.net
-  serviceBusEventQueueName: rpa-mit-events
   notifyApiKey: secret
-  tableConnectionString: secret
   azureWebJobsStorage: secret
+  eventQueueName: rpa-mit-events
+  notificationQueueName: rpa-mit-notification
+  storageAccount__queueServiceUri: "https://sndffcinfst1401.queue.core.windows.net/"
+  storageAccount__credential: "managedidentity"
+  storageAccount__tableServiceUri: "https://sndffcinfst1401.table.core.windows.net/"
 
 service:
   port: 80
@@ -70,13 +70,13 @@ ingress:
 livenessProbe:
   path: /healthz
   port: 3000
-  initialDelaySeconds: 30
-  periodSeconds: 20
+  initialDelaySeconds: 60
+  periodSeconds: 30
   failureThreshold: 3
 
 readinessProbe:
   path: /healthy
   port: 3000
-  initialDelaySeconds: 30
-  periodSeconds: 20
+  initialDelaySeconds: 60
+  periodSeconds: 30
   failureThreshold: 3

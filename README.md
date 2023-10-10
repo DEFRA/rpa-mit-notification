@@ -6,16 +6,6 @@ This is the MIT Notifications project. See the following [wiki](https://dev.azur
 
 Clone this [repo](https://github.com/DEFRA/rpa-mit-notification).
 
-# Version incompatibilities
-**VERY IMPORTANT BREAKING CHANGES when using Service Bus**
-There are incompatibility problems with NuGet Microsoft.Azure.Functions.Worker.Extensions.ServiceBus
-
-Version 5.4.0 works with Managed Identity and with the Function Apps base Docker image (mcr.microsoft.com/azure-functions/dotnet-isolated:4.1.3-dotnet-isolated6.0-appservice). This version must not be upgraded without proving that a newer version will work when deployed to AKS. When incompatible, you may get no obvious errors in the log but you don't get 'Now listening on http://[]:3000' after 'Job host started', and so the pods never become healthy and get taken down.
-
-The latest version (5.13.0) breaks the Function App. Versions before v5 (e.g. 4.21.0) do not support Managed Identity.
-
-Since we need to use an older version of the NuGet, the attribute parameters are different to the later versions. Therefore, the received service bus message must be a `string` not a `ServiceBusReceivedMessage`
-
 # Local setup
 
 No sensitive information is stored in the local.settings.json. 
@@ -41,20 +31,19 @@ Example values can be found on the project[Wiki](https://dev.azure.com/defragovu
 
 # Storage Account Setup
 
-The project requires a storage account with the following table created:
-- invoicenotification
+The project requires a storage account and the following queues created:
+- rpa-mit-invoicenotification
+- rpa-mit-invoicenotification-poison
+- rpa-mit-events
 
-Install Azure Storage Explorer to create the above table in a storage account.
+The storage acount also needs the following table created:
+- rpamitinvoicenotification (no hyhens are allowed in a table name)
+
+Install Azure Storage Explorer to create the above queues/tables in a storage account.
 
 For local development ensure Azurite is installed. This is installed as part of VS2002.
 
 Install the VSCode Azurite extension to start / stop Azurite table, blob, file, queue services.
-
-# Service Bus
-
-The project requires the following Service Bus queues to be created:
-- rpa-mit-notification
-- rpa-mit-events
 
 # Build and Test
 
