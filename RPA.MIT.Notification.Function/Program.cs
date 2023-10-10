@@ -28,7 +28,7 @@ var host = new HostBuilder()
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
 
-        var storageAccountCredential = configuration.GetSection("StorageAccount:Credential").Value;
+        var storageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
         if (IsManagedIdentity(storageAccountCredential))
         {
             Console.WriteLine("Startup.QueueClient/TableClient using Managed Identity");
@@ -43,7 +43,7 @@ var host = new HostBuilder()
             var queueName = configuration.GetSection("EventQueueName").Value;
             if (IsManagedIdentity(storageAccountCredential))
             {
-                var queueServiceUri = configuration.GetSection("StorageAccount:QueueServiceUri").Value;
+                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
                 var queueUrl = new Uri($"{queueServiceUri}{queueName}");
                 return new EventQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()));
             }
