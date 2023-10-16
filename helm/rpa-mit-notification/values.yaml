@@ -54,9 +54,7 @@ container:
   azureWebJobsStorage: secret
   eventQueueName: rpa-mit-events
   notificationQueueName: rpa-mit-notification
-  queueConnectionString__queueServiceUri: "https://sndffcinfst1401.queue.core.windows.net/"
-  queueConnectionString__credential: "managedidentity"
-  tableServiceUri: "https://sndffcinfst1401.table.core.windows.net/"
+  notificationTableName: rpamitinvoicenotification
 
 service:
   port: 80
