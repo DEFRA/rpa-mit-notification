@@ -9,7 +9,6 @@ data:
   EventQueueName: {{ quote .Values.container.eventQueueName }}
   AzureWebJobsSecretStorageType: {{ quote .Values.container.azureWebJobsSecretStorageType }}
   TriggerTimerInterval: {{ quote .Values.container.triggerTimerInterval }}
-  PartitionKey: {{ quote .Values.container.partitionKey }}
   templatesapproval: {{ quote .Values.container.templatesApproval }}
   templatesapproved: {{ quote .Values.container.templatesApproved }}
   templateserror: {{ quote .Values.container.templatesError }}

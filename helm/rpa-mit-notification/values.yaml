@@ -42,7 +42,6 @@ container:
   functionsWorkerRuntime: dotnet-isolated
   azureWebJobsSecretStorageType: files
   triggerTimerInterval: 0 */2 * * * *
-  partitionKey: MIT_Notifications
   templatesApproval: 8b70257a-a41c-4260-b9ce-2c6596246fb0
   templatesApproved: 30e785fe-75c7-40cd-aced-8d0856ff57ac
   templatesError: 5019017c-ac20-42bb-9fad-d72ed135d5bb
