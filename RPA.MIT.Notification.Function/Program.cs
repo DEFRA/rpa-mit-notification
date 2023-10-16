@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Azure.Data.Tables;
 using Azure.Identity;
-using Azure.Messaging.ServiceBus;
+using Azure.Storage.Queues;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,26 +25,52 @@ var host = new HostBuilder()
 
         var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
-        services.AddScoped<ISenderFactory, SenderFactory>();
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
+
+        var storageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
+        if (IsManagedIdentity(storageAccountCredential))
+        {
+            Console.WriteLine("Startup.QueueClient/TableClient using Managed Identity");
+        }
+        else
+        {
+            Console.WriteLine("Startup.QueueClient/TableClient using Connection String");
+        }
+
         services.AddSingleton<IEventQueueService>(_ =>
         {
-            // Constructors are slightly different dpending if using Managed Identity or SAS connection string
-            var managedIdentityNamespace = configuration.GetSection("ServiceBusEventConnectionString:fullyQualifiedNamespace").Value;
-            var connectionString = configuration.GetSection("ServiceBusEventConnectionString").Value;
-            var serviceBusClient = string.IsNullOrEmpty(managedIdentityNamespace)
-                ? new ServiceBusClient(connectionString)
-                : new ServiceBusClient(managedIdentityNamespace, new ManagedIdentityCredential());
-            var queueName = configuration.GetSection("ServiceBusEventQueueName").Value;
-            return new EventQueueService(serviceBusClient, queueName, new SenderFactory());
+            var queueName = configuration.GetSection("EventQueueName").Value;
+            if (IsManagedIdentity(storageAccountCredential))
+            {
+                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
+                var queueUrl = new Uri($"{queueServiceUri}{queueName}");
+                return new EventQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()));
+            }
+            else
+            {
+                return new EventQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, queueName));
+            }
         });
         services.AddSingleton<INotificationTable>(_ =>
         {
-            var tableClient = new TableClient(configuration.GetSection("TableConnectionString").Value, "invoicenotification");
-            return new NotificationTable(tableClient);
+            var tableName = configuration.GetSection("NotificationTableName").Value;
+            if (IsManagedIdentity(storageAccountCredential))
+            {
+                var tableServiceUri = new Uri(configuration.GetSection("TableServiceUri").Value);
+                return new NotificationTable(new TableClient(tableServiceUri, tableName, new DefaultAzureCredential()));
+            }
+            else
+            {
+                return new NotificationTable(new TableClient(configuration.GetSection("TableConnectionString").Value, tableName));
+            }
         });
     })
     .Build();
 
 host.Run();
+
+static bool IsManagedIdentity(string credentialName)
+{
+    return (credentialName != null && credentialName.ToLower() == "managedidentity");
+}

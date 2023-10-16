@@ -1,3 +1,4 @@
+using Azure;
 using Azure.Data.Tables;
 using RPA.MIT.Notification.Function.Models;
 using RPA.MIT.Notification.Function.Services;
@@ -8,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
+using System.Collections.Generic;
 
 namespace RPA.MIT.Notification
 {
@@ -30,24 +32,20 @@ namespace RPA.MIT.Notification
 
         [Function("SendNotification")]
         public async Task CreateEvent(
-            [ServiceBusTrigger("%ServiceBusNotificationQueueName%", Connection = "ServiceBusNotificationConnectionString")] string notificationMsg)
+            [QueueTrigger("%NotificationQueueName%", Connection = "QueueConnectionString")] string notificationMsg)
         {
             _logger.LogInformation("MIT Notification queue trigger function processing: {notificationMsg}", notificationMsg);
 
             try
             {
-                var notificationStr = notificationMsg; // Encoding.UTF8.GetString(notificationMsg.Body);
-                var isValid = ValidateMessage.IsValid(notificationStr);
+                var isValid = ValidateMessage.IsValid(notificationMsg);
 
                 if (!isValid)
                 {
-                    var newId = Guid.NewGuid().ToString();
-                    _logger.LogError("Invalid message: {notificationStr} id: {newId}", notificationStr, newId);
-                    await _eventQueueService.CreateMessage(newId, "failed", "notification", "Invalid message", notificationStr);
-                    return;
+                    _logger.LogError("Invalid message: {notificationMsg}", notificationMsg);
                 }
 
-                dynamic notificationMsgObj = JObject.Parse(notificationStr);
+                dynamic notificationMsgObj = JObject.Parse(notificationMsg);
                 string templateName = notificationMsgObj.Action;
                 string scheme = notificationMsgObj.Scheme;
                 var templateId = _configuration[$"templates{templateName}"];
@@ -57,15 +55,13 @@ namespace RPA.MIT.Notification
                 if (templateId == null)
                 {
                     _logger.LogError("Template not found for action: {action}", templateName);
-                    await _eventQueueService.CreateMessage(id, "failed", "notification", "Template not found", notificationStr);
-                    return;
+                    await _eventQueueService.CreateMessage(id, "failed", "notification", "Template not found", notificationMsg);
                 }
 
                 if (emailAddress == null)
                 {
                     _logger.LogError("emailAddress not found for scheme: {scheme}", scheme);
-                    await _eventQueueService.CreateMessage(id, "failed", "notification", "emailAddress not found", notificationStr);
-                    return;
+                    await _eventQueueService.CreateMessage(id, "failed", "notification", "emailAddress not found", notificationMsg);
                 }
 
                 _logger.LogInformation("Sending email for incoming message id: {id}", id);
@@ -74,7 +70,7 @@ namespace RPA.MIT.Notification
 
                 _logger.LogInformation("Sent email for incoming message id: {id}", id);
 
-                await _eventQueueService.CreateMessage(id, "sent", "notification", "Email sent", notificationStr);
+                await _eventQueueService.CreateMessage(id, "sent", "notification", "Email sent", notificationMsg);
 
                 _logger.LogInformation("Sent queue message for incoming message id: {id}", id);
 
@@ -85,7 +81,7 @@ namespace RPA.MIT.Notification
                     Status = "sent",
                     NotifyId = notifyResponse.id,
                     RetryCount = 0,
-                    Data = notificationStr
+                    Data = notificationMsg
                 });
                 _logger.LogInformation("Added table row for incoming message id: {id}", id);
             }
