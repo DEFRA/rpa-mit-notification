@@ -4,14 +4,11 @@ data:
   PORT: {{ quote .Values.container.port }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
   FUNCTIONS_WORKER_RUNTIME: {{ quote .Values.container.functionsWorkerRuntime }}
-  QueueConnectionString__queueServiceUri: {{ quote .Values.container.queueConnectionString__queueServiceUri }}
-  TableServiceUri: {{ quote .Values.container.tableServiceUri }}
-  QueueConnectionString__credential: {{ quote .Values.container.queueConnectionString__credential }}
   NotificationQueueName: {{ quote .Values.container.notificationQueueName }}
+  NotificationTableName: {{ quote .Values.container.notificationTableName }}
   EventQueueName: {{ quote .Values.container.eventQueueName }}
   AzureWebJobsSecretStorageType: {{ quote .Values.container.azureWebJobsSecretStorageType }}
   TriggerTimerInterval: {{ quote .Values.container.triggerTimerInterval }}
-  PartitionKey: {{ quote .Values.container.partitionKey }}
   templatesapproval: {{ quote .Values.container.templatesApproval }}
   templatesapproved: {{ quote .Values.container.templatesApproved }}
   templateserror: {{ quote .Values.container.templatesError }}

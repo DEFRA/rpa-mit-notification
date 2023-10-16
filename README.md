@@ -20,7 +20,7 @@ Alternatively save the values into a `secrets.json` file, i.e.
 {
   "NotifyApiKey": "--SECRET-VALUE--"
 }
-
+ 
 ```
 then load via the command line:
 ```

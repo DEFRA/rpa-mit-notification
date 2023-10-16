@@ -28,49 +28,8 @@ var host = new HostBuilder()
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
 
-        var storageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
-        if (IsManagedIdentity(storageAccountCredential))
-        {
-            Console.WriteLine("Startup.QueueClient/TableClient using Managed Identity");
-        }
-        else
-        {
-            Console.WriteLine("Startup.QueueClient/TableClient using Connection String");
-        }
-
-        services.AddSingleton<IEventQueueService>(_ =>
-        {
-            var queueName = configuration.GetSection("EventQueueName").Value;
-            if (IsManagedIdentity(storageAccountCredential))
-            {
-                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
-                var queueUrl = new Uri($"{queueServiceUri}{queueName}");
-                return new EventQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()));
-            }
-            else
-            {
-                return new EventQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, queueName));
-            }
-        });
-        services.AddSingleton<INotificationTable>(_ =>
-        {
-            var tableName = configuration.GetSection("NotificationTableName").Value;
-            if (IsManagedIdentity(storageAccountCredential))
-            {
-                var tableServiceUri = new Uri(configuration.GetSection("TableServiceUri").Value);
-                return new NotificationTable(new TableClient(tableServiceUri, tableName, new DefaultAzureCredential()));
-            }
-            else
-            {
-                return new NotificationTable(new TableClient(configuration.GetSection("TableConnectionString").Value, tableName));
-            }
-        });
+        services.AddQueueAndTableServices(configuration);
     })
     .Build();
 
 host.Run();
-
-static bool IsManagedIdentity(string credentialName)
-{
-    return (credentialName != null && credentialName.ToLower() == "managedidentity");
-}
