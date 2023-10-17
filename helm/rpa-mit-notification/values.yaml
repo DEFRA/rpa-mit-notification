@@ -52,7 +52,7 @@ container:
   notifyApiKey: secret
   azureWebJobsStorage: secret
   eventQueueName: rpa-mit-events
-  notificationQueueName: rpa-mit-notification
+  notificationQueueName: rpa-mit-invoicenotification
   notificationTableName: rpamitinvoicenotification
   queueConnectionString__credential: managedidentity
   queueConnectionString__queueServiceUri: https://sndffcrpamitst1001.queue.core.windows.net/

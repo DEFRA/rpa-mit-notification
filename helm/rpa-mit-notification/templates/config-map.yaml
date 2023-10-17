@@ -7,10 +7,10 @@ data:
   NotificationQueueName: {{ quote .Values.container.notificationQueueName }}
   NotificationTableName: {{ quote .Values.container.notificationTableName }}
   EventQueueName: {{ quote .Values.container.eventQueueName }}
-  QueueConnectionString__credential: {{ quote .Values.container.queueConnectionString__credential: }}
-  QueueConnectionString__queueServiceUri: {{ quote .Values.container.queueConnectionString__queueServiceUri: }}
-  TableConnectionString__credential: {{ quote .Values.container.tableConnectionString__credential: }}
-  TableConnectionString__tableServiceUri: {{ quote .Values.container.tableConnectionString__tableServiceUri: }}
+  QueueConnectionString__credential: {{ quote .Values.container.queueConnectionString__credential }}
+  QueueConnectionString__queueServiceUri: {{ quote .Values.container.queueConnectionString__queueServiceUri }}
+  TableConnectionString__credential: {{ quote .Values.container.tableConnectionString__credential }}
+  TableConnectionString__tableServiceUri: {{ quote .Values.container.tableConnectionString__tableServiceUri }}
   AzureWebJobsSecretStorageType: {{ quote .Values.container.azureWebJobsSecretStorageType }}
   TriggerTimerInterval: {{ quote .Values.container.triggerTimerInterval }}
   templatesapproval: {{ quote .Values.container.templatesApproval }}
