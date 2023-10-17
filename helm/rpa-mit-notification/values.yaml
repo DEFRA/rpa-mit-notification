@@ -54,6 +54,10 @@ container:
   eventQueueName: rpa-mit-events
   notificationQueueName: rpa-mit-notification
   notificationTableName: rpamitinvoicenotification
+  queueConnectionString__credential: managedidentity
+  queueConnectionString__queueServiceUri: https://sndffcrpamitst1001.queue.core.windows.net/
+  tableConnectionString__credential: managedidentity
+  tableConnectionString__queueServiceUri: https://sndffcrpamitst1001.table.core.windows.net/
 
 service:
   port: 80
