@@ -57,7 +57,7 @@ container:
   queueConnectionString__credential: managedidentity
   queueConnectionString__queueServiceUri: https://sndffcrpamitst1001.queue.core.windows.net/
   tableConnectionString__credential: managedidentity
-  tableConnectionString__queueServiceUri: https://sndffcrpamitst1001.table.core.windows.net/
+  tableConnectionString__tableServiceUri: https://sndffcrpamitst1001.table.core.windows.net/
 
 service:
   port: 80
