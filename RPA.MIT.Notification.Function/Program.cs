@@ -25,6 +25,15 @@ var host = new HostBuilder()
 
         var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
+        foreach (var config in configuration.AsEnumerable())
+        {
+            var val = config.Value;
+            if (val != null && val.Length > 40)
+            {
+                val = val.Substring(0, 39);
+            }
+            Console.WriteLine($"{config.Key}={val}");
+        }
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
 
