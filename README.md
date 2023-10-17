@@ -1,4 +1,4 @@
-# Introduction 
+# Introduction
 
 This is the MIT Notifications project. See the following [wiki](https://dev.azure.com/defragovuk/DEFRA-EST/_wiki/wikis/DEFRA-EST/8604/Manual-Invoice-Template) for information about the project.
 
@@ -20,7 +20,7 @@ Alternatively save the values into a `secrets.json` file, i.e.
 {
   "NotifyApiKey": "--SECRET-VALUE--"
 }
- 
+
 ```
 then load via the command line:
 ```
