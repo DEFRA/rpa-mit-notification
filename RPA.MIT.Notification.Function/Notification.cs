@@ -1,4 +1,3 @@
-using Azure;
 using Azure.Data.Tables;
 using RPA.MIT.Notification.Function.Models;
 using RPA.MIT.Notification.Function.Services;
@@ -9,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace RPA.MIT.Notification
 {
@@ -21,7 +20,7 @@ namespace RPA.MIT.Notification
         private readonly ILogger _logger;
         private readonly IEventQueueService _eventQueueService;
 
-        public Notification(INotificationTable notificationTable,  INotifyService notifyService, IConfiguration configuration, IEventQueueService eventQueueService, ILoggerFactory loggerFactory)
+        public Notification(INotificationTable notificationTable, INotifyService notifyService, IConfiguration configuration, IEventQueueService eventQueueService, ILoggerFactory loggerFactory)
         {
             _notificationTable = notificationTable;
             _notifyService = notifyService;
@@ -49,8 +48,15 @@ namespace RPA.MIT.Notification
                 string templateName = notificationMsgObj.Action;
                 string scheme = notificationMsgObj.Scheme;
                 var templateId = _configuration[$"templates{templateName}"];
-                var emailAddress = _configuration[$"schemas{scheme}"];
                 string id = notificationMsgObj.Id;
+                var emailAddress = _configuration[$"schemas{scheme}"];
+                if (emailAddress is null)
+                {
+                    emailAddress = notificationMsgObj.EmailRecipient;
+                }
+
+                var jObject = JsonConvert.DeserializeObject<JObject>(notificationMsg);
+                dynamic messagePersonalisation = jObject["Data"];
 
                 if (templateId == null)
                 {
@@ -66,7 +72,7 @@ namespace RPA.MIT.Notification
 
                 _logger.LogInformation("Sending email for incoming message id: {id}", id);
 
-                var notifyResponse = _notifyService.SendEmail(emailAddress, templateId, notificationMsgObj.Data);
+                var notifyResponse = _notifyService.SendEmail(emailAddress, templateId, messagePersonalisation);
 
                 _logger.LogInformation("Sent email for incoming message id: {id}", id);
 
