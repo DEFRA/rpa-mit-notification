@@ -49,10 +49,10 @@ namespace RPA.MIT.Notification
                 string scheme = notificationMsgObj.Scheme;
                 var templateId = _configuration[$"templates{templateName}"];
                 string id = notificationMsgObj.Id;
-                var emailAddress = _configuration[$"schemas{scheme}"];
+                var emailAddress = notificationMsgObj.EmailRecipient;
                 if (emailAddress is null)
                 {
-                    emailAddress = notificationMsgObj.EmailRecipient;
+                    emailAddress = _configuration[$"schemas{scheme}"];
                 }
 
                 var jObject = JsonConvert.DeserializeObject<JObject>(notificationMsg);
