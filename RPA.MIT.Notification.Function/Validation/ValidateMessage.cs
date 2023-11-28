@@ -21,12 +21,16 @@ namespace RPA.MIT.Notification.Function.Validation
             ""Scheme"": {
                 ""type"": ""string""
             },
+            ""EmailRecipient"": {
+                ""type"": ""string""
+            },
         },
         ""required"": [
             ""Action"",
             ""Data"",
             ""Id"",
-            ""Scheme""
+            ""Scheme"",
+            ""EmailRecipient""
         ]
         }";
 

@@ -6,7 +6,7 @@
     "QueueConnectionString": "UseDevelopmentStorage=true",
     "QueueServiceUri": "",
     "EventQueueName": "rpa-mit-events",
-    "NotificationQueueName": "rpa-mit-invoicenotification",
+    "NotificationQueueName": "rpa-mit-invoice-notification",
     "TableConnectionString": "UseDevelopmentStorage=true",
     "TableServiceUri": "",
     "NotificationTableName": "rpamitinvoicenotification",
