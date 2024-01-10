@@ -21,10 +21,7 @@ namespace RPA.MIT.Notification.Function.Validation
             ""Scheme"": {
                 ""type"": ""string""
             },
-            ""ApproverEmail"": {
-                ""type"": ""string""
-            },
-            ""CreatorEmail"": {
+            ""EmailRecipient"": {
                 ""type"": ""string""
             },
         },
@@ -33,8 +30,7 @@ namespace RPA.MIT.Notification.Function.Validation
             ""Data"",
             ""Id"",
             ""Scheme"",
-            ""ApproverEmail"",
-            ""CreatorEmail""
+            ""EmailRecipient""
         ]
         }";
 
