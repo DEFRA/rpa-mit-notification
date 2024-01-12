@@ -1,10 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Azure.Data.Tables;
-using Azure.Identity;
-using Azure.Storage.Queues;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

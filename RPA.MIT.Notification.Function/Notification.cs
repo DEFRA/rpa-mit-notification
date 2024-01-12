@@ -49,7 +49,7 @@ namespace RPA.MIT.Notification
                 string scheme = notificationMsgObj.Scheme;
                 var templateId = _configuration[$"templates{templateName}"];
                 string id = notificationMsgObj.Id;
-                var emailAddress = notificationMsgObj.EmailRecipient;
+                string emailAddress = notificationMsgObj.EmailRecipient;
                 if (emailAddress is null)
                 {
                     emailAddress = _configuration[$"schemas{scheme}"];
