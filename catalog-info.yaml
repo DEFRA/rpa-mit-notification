@@ -1,0 +1,51 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: rpa-mit-notifications
+  description: The MIT notifications
+  annotations:
+    github.com/project-slug: defra/rpa-mit-notification
+    dev.azure.com/project: DEFRA-MIT
+    dev.azure.com/build-definition: rpa-mit-notifications
+    sonarqube.org/project-key: rpa-mit-notifications
+    grafana/dashboard-selector: "folderTitle == 'Managed Prometheus'"
+    backstage.io/kubernetes-id: rpa-mit-notifications
+  links:
+    - url: https://github.com/DEFRA/rpa-mit-notification
+      title: View repository
+      icon: github
+    - url: https://sonarcloud.io/summary/overall?id=rpa-mit-notifications
+      title: SonarCloud Analysis
+    - url: https://snyk.io/test/github/DEFRA/rpa-mit-notifications
+      title: Snyk Analysis
+  tags:
+    - dotnet
+    - back-end
+    - service-bus
+    - storage-account
+    - application-insights
+spec:
+  type: backend
+  lifecycle: alpha
+  owner: "group:default/lap-mit"
+  system: "system:default/lap-mit-system"
+  dependsOn:
+    - "resource:default/rpa-mit-event-storage-queue"
+    - "resource:default/rpa-mit-notification-storage-queue"
+    - "resource:default/rpa-mit-invoice-notification-storage-table"
+    - "resource:default/ADPINFAI01"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: rpa-mit-invoice-notification-storage-table
+  description: Invoice notification storage table
+  tags:
+    - storage-account
+    - table
+spec:
+  type: table-storage
+  owner: "group:default/lap-mit"
+  system: "system:default/lap-mit-system"
+  dependsOn: 
+    - "resource:default/adpinfst01"
