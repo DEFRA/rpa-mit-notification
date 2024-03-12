@@ -1,14 +1,15 @@
-using Azure.Data.Tables;
-using RPA.MIT.Notification.Function.Models;
-using RPA.MIT.Notification.Function.Services;
-using RPA.MIT.Notification.Function.Validation;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Azure.Data.Tables;
+using Azure.Messaging.ServiceBus;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RPA.MIT.Notification.Function.Models;
+using RPA.MIT.Notification.Function.Services;
+using RPA.MIT.Notification.Function.Validation;
 
 namespace RPA.MIT.Notification
 {
@@ -19,7 +20,7 @@ namespace RPA.MIT.Notification
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly IEventQueueService _eventQueueService;
-
+        
         public Notification(INotificationTable notificationTable, INotifyService notifyService, IConfiguration configuration, IEventQueueService eventQueueService, ILoggerFactory loggerFactory)
         {
             _notificationTable = notificationTable;
@@ -30,9 +31,9 @@ namespace RPA.MIT.Notification
         }
 
         [Function("SendNotification")]
-        public async Task CreateEvent(
-            [QueueTrigger("%NotificationQueueName%", Connection = "QueueConnectionString")] string notificationMsg)
+        public async Task SendNotification([ServiceBusTrigger("%NotificationQueueName%", Connection = "QueueConnectionString")] ServiceBusReceivedMessage message)
         {
+            var notificationMsg = message.Body.ToString();
             _logger.LogInformation("MIT Notification queue trigger function processing: {notificationMsg}", notificationMsg);
 
             try
@@ -99,8 +100,7 @@ namespace RPA.MIT.Notification
         }
 
         [Function("CheckEmailStatus")]
-        public async Task CheckEmailStatus(
-            [TimerTrigger("%TriggerTimerInterval%")] TimerInfo myTimer)
+        public async Task CheckEmailStatus([TimerTrigger("%TriggerTimerInterval%")] TimerInfo myTimer)
         {
             _logger.LogInformation("CheckEmailStatus function executed at: {time}", DateTime.Now);
 
