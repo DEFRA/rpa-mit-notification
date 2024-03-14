@@ -57,14 +57,12 @@ namespace RPA.MIT.Notification.Function.Tests
                 Data = new Personalisation { TemplateField1 = "approved" }
             };
 
-            string message = JsonConvert.SerializeObject(notificationRequest);
+            // Create a ServiceBusReceivedMessage and set its Body property
+            var messageBody = new BinaryData(JsonConvert.SerializeObject(notificationRequest));
+            var serviceBusReceivedMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(body: messageBody);
 
-            // // Create a ServiceBusReceivedMessage and set its Body property
-            // var serviceBusReceivedMessage = new ServiceBusReceivedMessage();
-            // serviceBusReceivedMessage.Body = new BinaryData(message);
-
-            // // Pass the ServiceBusReceivedMessage to the function
-            // _sut.SendNotification(serviceBusReceivedMessage);
+            // Pass the ServiceBusReceivedMessage to the function
+            _sut.SendNotification(serviceBusReceivedMessage);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
         }
@@ -81,14 +79,12 @@ namespace RPA.MIT.Notification.Function.Tests
                 Data = new Personalisation { TemplateField1 = "approved" }
             };
 
-            string message = JsonConvert.SerializeObject(notificationRequest);
+            // Create a ServiceBusReceivedMessage and set its Body property
+            var messageBody = new BinaryData(JsonConvert.SerializeObject(notificationRequest));
+            var serviceBusReceivedMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(body: messageBody);
 
-            // // Create a ServiceBusReceivedMessage and set its Body property
-            // var serviceBusReceivedMessage = new ServiceBusReceivedMessage();
-            // serviceBusReceivedMessage.Body = new BinaryData(message);
-
-            // // Pass the ServiceBusReceivedMessage to the function
-            // _sut.SendNotification(serviceBusReceivedMessage);
+            // Pass the ServiceBusReceivedMessage to the function
+            _sut.SendNotification(serviceBusReceivedMessage);
 
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
@@ -108,13 +104,11 @@ namespace RPA.MIT.Notification.Function.Tests
                 Data = new Personalisation { TemplateField1 = "approved" }
             };
 
-            string message = JsonConvert.SerializeObject(notificationRequest);
+            // Create a ServiceBusReceivedMessage and set its Body property
+            var messageBody = new BinaryData(JsonConvert.SerializeObject(notificationRequest));
+            var serviceBusReceivedMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(body: messageBody);
 
-            // // Create a ServiceBusReceivedMessage and set its Body property
-            // var serviceBusReceivedMessage = new ServiceBusReceivedMessage();
-            // serviceBusReceivedMessage.Body = new BinaryData(message);
-
-            // await Assert.ThrowsAsync<NullReferenceException>(() => notifyFunction.SendNotification(serviceBusReceivedMessage));
+            await Assert.ThrowsAsync<NullReferenceException>(() => notifyFunction.SendNotification(serviceBusReceivedMessage));
             Assert.Null(notificationEntity);
         }
 
@@ -136,15 +130,14 @@ namespace RPA.MIT.Notification.Function.Tests
                 Data = new Personalisation { TemplateField1 = "approved" }
             };
 
-            string message = JsonConvert.SerializeObject(notificationRequest);
             _mockNotifyService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JObject>())).Returns(emailResponse);
 
-            // // Create a ServiceBusReceivedMessage and set its Body property
-            // var serviceBusReceivedMessage = new ServiceBusReceivedMessage();
-            // serviceBusReceivedMessage.Body = new BinaryData(message);
+            // Create a ServiceBusReceivedMessage and set its Body property
+            var messageBody = new BinaryData(JsonConvert.SerializeObject(notificationRequest));
+            var serviceBusReceivedMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(body: messageBody);
 
-            // // Pass the ServiceBusReceivedMessage to the function
-            // _sut.SendNotification(serviceBusReceivedMessage);
+            // Pass the ServiceBusReceivedMessage to the function
+            _sut.SendNotification(serviceBusReceivedMessage);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Once);
         }
@@ -163,16 +156,14 @@ namespace RPA.MIT.Notification.Function.Tests
                 Scheme = "AP"
             };
 
-            string message = JsonConvert.SerializeObject(inValidRequest);
-
             _mockNotifyService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(emailResponse);
 
-            // // Create a ServiceBusReceivedMessage and set its Body property
-            // var serviceBusReceivedMessage = new ServiceBusReceivedMessage();
-            // serviceBusReceivedMessage.Body = new BinaryData(message);
+            // Create a ServiceBusReceivedMessage and set its Body property
+            var messageBody = new BinaryData(JsonConvert.SerializeObject(inValidRequest));
+            var serviceBusReceivedMessage = ServiceBusModelFactory.ServiceBusReceivedMessage(body: messageBody);
 
-            // // Pass the ServiceBusReceivedMessage to the function
-            // _sut.SendNotification(serviceBusReceivedMessage);
+            // Pass the ServiceBusReceivedMessage to the function
+            _sut.SendNotification(serviceBusReceivedMessage);
 
             _mockTableClient.Verify(x => x.AddEntityAsync(It.IsAny<NotificationEntity>(), default), Times.Never);
         }
