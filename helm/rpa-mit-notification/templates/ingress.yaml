@@ -1,3 +1,3 @@
-{{- include "ffc-helm-library.azure-ingress" (list . "rpa-mit-notification.ingress") -}}
+{{- include "adp-helm-library.azure-ingress" (list . "rpa-mit-notification.ingress") -}}
 {{- define "rpa-mit-notification.ingress" -}}
 {{- end -}}

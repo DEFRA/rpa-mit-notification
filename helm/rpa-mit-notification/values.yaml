@@ -1,63 +1,39 @@
 environment: development
 name: rpa-mit-notification
-namespace: ffc-rpa
-workstream: ffc-rpa
+namespace: lap-mit
+workstream: lap-mit
 image: rpa-mit-notification
 
-labels: {}
-
-aadPodIdentity: true
+labels:
+  component: notification
 
 appInsights:
-  key:
+  connectionString:
 
-azureIdentity:
-  clientID: not-a-real-clientID
-  resourceID: not-a-real-resourceID
-
-containerConfigMap:
-  name: rpa-mit-notification-config-map
-
-containerSecret:
-  name: rpa-mit-notification-container-secret
-  type: Opaque
-
-deployment:
-  cpuThreshold: 80
-  memoryThreshold: 80
-  minReadySeconds: 0
-  minReplicas: 1
-  maxReplicas: 1
-  priorityClassName: default
-  replicas: 1
-  restartPolicy: Always
+deployment: {}
 
 container:
-  imagePullPolicy: IfNotPresent
-  requestMemory: 120Mi
-  requestCpu: 5m
-  limitMemory: 120Mi
-  limitCpu: 120m
+  requestMemory: 100Mi
+  requestCpu: 100m
+  limitMemory: 100Mi
+  limitCpu: 100m
   port: 3000
-  functionsWorkerRuntime: dotnet-isolated
-  azureWebJobsSecretStorageType: files
-  triggerTimerInterval: 0 */2 * * * *
-  templatesApproval: value-from-app-config-service
-  templatesApproved: value-from-app-config-service
-  templatesError: value-from-app-config-service
-  templatesRejected: value-from-app-config-service
-  templatesUpload: value-from-app-config-service
-  schemasBPS: value-from-app-config-service
-  schemasAP: value-from-app-config-service
-  notifyApiKey: secret
-  azureWebJobsStorage: secret
-  eventQueueName: value-from-app-config-service
-  notificationQueueName: value-from-app-config-service
-  notificationTableName: value-from-app-config-service
-  queueConnectionString__credential: value-from-app-config-service
-  queueConnectionString__queueServiceUri: value-from-app-config-service
-  tableConnectionString__credential: value-from-app-config-service
-  tableConnectionString__tableServiceUri: value-from-app-config-service
+
+livenessProbe:
+  path: /healthz
+  port: 3000
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  path: /healthy
+  port: 3000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
 
 service:
   port: 80
@@ -66,18 +42,4 @@ service:
 ingress:
   class: nginx
   endpoint: rpa-mit-notification
-  server: value.replaced.from.app.config
-
-livenessProbe:
-  path: /healthz
-  port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
-  failureThreshold: 3
-
-readinessProbe:
-  path: /healthy
-  port: 3000
-  initialDelaySeconds: 60
-  periodSeconds: 30
-  failureThreshold: 3
+  server: example.com

@@ -1,8 +1,8 @@
-{{- include "ffc-helm-library.deployment" (list . "rpa-mit-notification.deployment") -}}
+{{- include "adp-helm-library.deployment" (list . "rpa-mit-notification.deployment") -}}
 {{- define "rpa-mit-notification.deployment" -}}
 spec:
   template:
     spec:
       containers:
-      - {{ include "ffc-helm-library.container" (list . "rpa-mit-notification.container") }}
+      - {{ include "adp-helm-library.container" (list . "rpa-mit-notification.container") }}
 {{- end -}}

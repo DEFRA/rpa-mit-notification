@@ -1,5 +1,0 @@
-{{- if .Values.aadPodIdentity }}
-{{- include "ffc-helm-library.azure-identity" (list . "rpa-mit-notification.azure-identity") -}}
-{{- end }}
-{{- define "rpa-mit-notification.azure-identity" -}}
-{{- end -}}
