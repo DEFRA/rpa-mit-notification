@@ -1,9 +1,7 @@
 using System;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Services.ServiceBusProvider;
 
 namespace RPA.MIT.Notification.Function.Services;
 
@@ -38,7 +36,6 @@ public class EventQueueService : IEventQueueService
             }
         };
 
-        var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(eventRequest));
-        await _serviceBusProvider.SendMessageAsync(_configuration["EventQueueName"] ,Convert.ToBase64String(bytes));
+        await _serviceBusProvider.SendMessageAsync(_configuration["EventQueueName"] ,JsonSerializer.Serialize(eventRequest));
     }
 }

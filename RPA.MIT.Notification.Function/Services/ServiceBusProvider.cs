@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Configuration;
 
-namespace Services.ServiceBusProvider;
+namespace RPA.MIT.Notification.Function.Services;
 
 public interface IServiceBusProvider
 {
@@ -26,7 +26,7 @@ public class ServiceBusProvider : IServiceBusProvider
     {
         await using var client = new ServiceBusClient(_connectionString);
         ServiceBusSender sender = client.CreateSender(queue);
-        ServiceBusMessage message = new ServiceBusMessage(Encoding.UTF8.GetBytes(msg));
+        ServiceBusMessage message = new ServiceBusMessage(msg.EncodeMessage());
         await sender.SendMessageAsync(message);
     }
 

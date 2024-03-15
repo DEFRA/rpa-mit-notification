@@ -4,7 +4,6 @@ using System;
 using Azure.Messaging.ServiceBus;
 using Azure.Identity;
 using Azure.Data.Tables;
-using Services.ServiceBusProvider;
 
 namespace RPA.MIT.Notification.Function.Services
 {

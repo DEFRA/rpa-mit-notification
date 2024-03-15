@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using RPA.MIT.Notification.Function.Services;
-using Moq;
-using Xunit;
 using Microsoft.Extensions.Configuration;
-using Services.ServiceBusProvider;
+using Moq;
+using RPA.MIT.Notification.Function.Services;
+using Xunit;
 
 namespace RPA.MIT.Notification.Function.Tests;
 

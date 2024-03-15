@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Notify.Client;
 using Notify.Interfaces;
 using RPA.MIT.Notification.Function.Services;
-using Services.ServiceBusProvider;
 
 var host = new HostBuilder()
     .ConfigureAppConfiguration((hostContext, config) =>
