@@ -1,14 +1,15 @@
-using Azure.Data.Tables;
-using RPA.MIT.Notification.Function.Models;
-using RPA.MIT.Notification.Function.Services;
-using RPA.MIT.Notification.Function.Validation;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Azure.Data.Tables;
+using Azure.Messaging.ServiceBus;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RPA.MIT.Notification.Function.Models;
+using RPA.MIT.Notification.Function.Services;
+using RPA.MIT.Notification.Function.Validation;
 
 namespace RPA.MIT.Notification
 {
@@ -19,7 +20,7 @@ namespace RPA.MIT.Notification
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly IEventQueueService _eventQueueService;
-
+        
         public Notification(INotificationTable notificationTable, INotifyService notifyService, IConfiguration configuration, IEventQueueService eventQueueService, ILoggerFactory loggerFactory)
         {
             _notificationTable = notificationTable;
@@ -30,21 +31,21 @@ namespace RPA.MIT.Notification
         }
 
         [Function("SendNotification")]
-        public async Task CreateEvent(
-            [QueueTrigger("%NotificationQueueName%", Connection = "QueueConnectionString")] string notificationMsg)
+        public async Task SendNotification([ServiceBusTrigger("%NotificationQueueName%", Connection = "QueueConnectionString")] ServiceBusReceivedMessage message)
         {
-            _logger.LogInformation("MIT Notification queue trigger function processing: {notificationMsg}", notificationMsg);
+            var decodedMessage = message.Body.ToString().DecodeMessage();
+            _logger.LogInformation("MIT Notification queue trigger function processing: {decodedMessage}", decodedMessage);
 
             try
             {
-                var isValid = ValidateMessage.IsValid(notificationMsg);
+                var isValid = ValidateMessage.IsValid(decodedMessage);
 
                 if (!isValid)
                 {
-                    _logger.LogError("Invalid message: {notificationMsg}", notificationMsg);
+                    _logger.LogError("Invalid message: {decodedMessage}", decodedMessage);
                 }
 
-                dynamic notificationMsgObj = JObject.Parse(notificationMsg);
+                dynamic notificationMsgObj = JObject.Parse(decodedMessage);
                 string templateName = notificationMsgObj.Action;
                 string scheme = notificationMsgObj.Scheme;
                 var templateId = _configuration[$"templates{templateName}"];
@@ -55,19 +56,19 @@ namespace RPA.MIT.Notification
                     emailAddress = _configuration[$"schemas{scheme}"];
                 }
 
-                var jObject = JsonConvert.DeserializeObject<JObject>(notificationMsg);
+                var jObject = JsonConvert.DeserializeObject<JObject>(decodedMessage);
                 dynamic messagePersonalisation = jObject["Data"];
 
                 if (templateId == null)
                 {
                     _logger.LogError("Template not found for action: {action}", templateName);
-                    await _eventQueueService.CreateMessage(id, "failed", "notification", "Template not found", notificationMsg);
+                    await _eventQueueService.CreateMessage(id, "failed", "notification", "Template not found", decodedMessage);
                 }
 
                 if (emailAddress == null)
                 {
                     _logger.LogError("emailAddress not found for scheme: {scheme}", scheme);
-                    await _eventQueueService.CreateMessage(id, "failed", "notification", "emailAddress not found", notificationMsg);
+                    await _eventQueueService.CreateMessage(id, "failed", "notification", "emailAddress not found", decodedMessage);
                 }
 
                 _logger.LogInformation("Sending email for incoming message id: {id}", id);
@@ -76,7 +77,7 @@ namespace RPA.MIT.Notification
 
                 _logger.LogInformation("Sent email for incoming message id: {id}", id);
 
-                await _eventQueueService.CreateMessage(id, "sent", "notification", "Email sent", notificationMsg);
+                await _eventQueueService.CreateMessage(id, "sent", "notification", "Email sent", decodedMessage);
 
                 _logger.LogInformation("Sent queue message for incoming message id: {id}", id);
 
@@ -87,7 +88,7 @@ namespace RPA.MIT.Notification
                     Status = "sent",
                     NotifyId = notifyResponse.id,
                     RetryCount = 0,
-                    Data = notificationMsg
+                    Data = decodedMessage
                 });
                 _logger.LogInformation("Added table row for incoming message id: {id}", id);
             }
@@ -99,8 +100,7 @@ namespace RPA.MIT.Notification
         }
 
         [Function("CheckEmailStatus")]
-        public async Task CheckEmailStatus(
-            [TimerTrigger("%TriggerTimerInterval%")] TimerInfo myTimer)
+        public async Task CheckEmailStatus([TimerTrigger("%TriggerTimerInterval%")] TimerInfo myTimer)
         {
             _logger.LogInformation("CheckEmailStatus function executed at: {time}", DateTime.Now);
 

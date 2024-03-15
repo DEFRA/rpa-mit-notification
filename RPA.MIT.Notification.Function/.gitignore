@@ -3,6 +3,8 @@
 
 # Azure Functions localsettings file
 .vscode/*
+local.settings.json
+secrets.json
 
 # User-specific files
 *.suo
