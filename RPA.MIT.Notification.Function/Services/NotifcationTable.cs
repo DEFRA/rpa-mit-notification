@@ -11,6 +11,7 @@ public class NotificationTable : INotificationTable
 
     public NotificationTable(TableClient tableClient)
     {
+        tableClient.CreateIfNotExists();
         _tableClient = tableClient;
     }
 
