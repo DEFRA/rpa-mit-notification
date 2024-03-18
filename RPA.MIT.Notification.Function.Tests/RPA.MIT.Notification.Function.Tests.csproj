@@ -30,4 +30,9 @@
     <ProjectReference Include="..\RPA.MIT.Notification.Function\RPA.MIT.Notification.Function.csproj" />
   </ItemGroup>
 
+    <PropertyGroup>
+        <!-- Exclude the project from analysis -->
+        <SonarQubeExclude>true</SonarQubeExclude>
+    </PropertyGroup>
+
 </Project>
