@@ -1,5 +1,5 @@
 apiVersion: v2
-name: rpa-mit-web-infra
+name: rpa-mit-notification
 description: An ASO Helm chart to deploy the rpa-mit-web Infrastructure
 version: 0.0.1
 dependencies:
