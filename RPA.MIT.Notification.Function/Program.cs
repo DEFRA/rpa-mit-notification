@@ -8,10 +8,16 @@ using Notify.Interfaces;
 using RPA.MIT.Notification.Function.Services;
 
 var host = new HostBuilder()
-    .ConfigureAppConfiguration(config => config
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables())
+    .ConfigureAppConfiguration((hostContext, config) =>
+    {
+        if(hostContext.HostingEnvironment.IsDevelopment())
+        {
+            Console.WriteLine("STARTING IN DEVELOPMENT MODE");
+            config.AddUserSecrets<Program>();
+        }
+        config.SetBasePath(Directory.GetCurrentDirectory());
+        config.AddEnvironmentVariables();
+    })
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices(services =>
     {
@@ -22,9 +28,12 @@ var host = new HostBuilder()
 
         services.AddSingleton<INotificationClient>(_ => new NotificationClient(configuration.GetSection("NotifyApiKey").Value));
         services.AddSingleton<INotifyService, NotifyService>();
+        services.AddSingleton<IServiceBusProvider, ServiceBusProvider>();
 
         services.AddQueueAndTableServices(configuration);
     })
     .Build();
+
+Console.WriteLine("Startup.ConfigureServices() completed");
 
 host.Run();

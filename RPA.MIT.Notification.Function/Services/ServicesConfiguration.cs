@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System;
-using Azure.Storage.Queues;
+using Azure.Messaging.ServiceBus;
 using Azure.Identity;
 using Azure.Data.Tables;
 
@@ -25,16 +25,23 @@ namespace RPA.MIT.Notification.Function.Services
                 var queueName = configuration.GetSection("EventQueueName").Value;
                 if (IsManagedIdentity(queueCredential))
                 {
-                    var queueServiceUrl = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
-                    var queueUri = new Uri($"{queueServiceUrl}{queueName}");
-                    Console.WriteLine($"Startup.QueueClient using Managed Identity with url {queueUri}");
-                    return new EventQueueService(new QueueClient(queueUri, new DefaultAzureCredential()));
+                    var serviceBusNamespace = configuration.GetSection("QueueConnectionString:ServiceBusNamespace").Value;
+                    var fullyQualifiedNamespace = $"{serviceBusNamespace}.servicebus.windows.net";
+                    Console.WriteLine($"Startup.ServiceBusClient using Managed Identity with namespace {fullyQualifiedNamespace}");
+                    
+                    // Using Azure.Messaging.ServiceBus with Managed Identity
+                    var client = new ServiceBusClient(fullyQualifiedNamespace, new DefaultAzureCredential());
+                    return new EventQueueService(new ServiceBusProvider(configuration), configuration);
                 }
                 else
                 {
-                    return new EventQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, queueName));
+                    // Using Azure.Messaging.ServiceBus with a connection string
+                    var connectionString = configuration.GetSection("QueueConnectionString").Value;
+                    var client = new ServiceBusClient(connectionString);
+                    return new EventQueueService(new ServiceBusProvider(configuration), configuration);
                 }
             });
+
             services.AddSingleton<INotificationTable>(_ =>
             {
                 var tableCredential = configuration.GetSection("TableConnectionString:Credential").Value;
