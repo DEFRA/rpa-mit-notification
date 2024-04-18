@@ -13,6 +13,7 @@ public class NotificationTable : INotificationTable
     {
         tableClient.CreateIfNotExists();
         _tableClient = tableClient;
+        _tableClient.CreateIfNotExists();
     }
 
     public async Task Add(NotificationEntity entity)
