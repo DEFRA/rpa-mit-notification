@@ -5,18 +5,27 @@ This repository contains an azure function with a Service Bus trigger, the messa
 
 Amend as needed for your distribution, this assumes you are using windows with WSL. 
 
--  .NET 8 SDK
-```bash
-wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
-```
+- <details>
+    <summary> .NET 8 SDK </summary>
+    
+    #### Basic instructions for installing the .NET 8 SDK on a debian based system.
+  
+    Amend as needed for your distribution.
 
-- Azure Functions Core Tools
+    ```bash
+    wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+    sudo dpkg -i packages-microsoft-prod.deb
+    sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+    ```
+</details>
 
-```bash
-sudo apt-get install azure-functions-core-tools-4
-```
+- <details>
+    <summary> Azure Functions Core Tools </summary>
+    
+    ```bash
+    sudo apt-get install azure-functions-core-tools-4
+    ```
+</details>
 
 - [Docker](https://docs.docker.com/desktop/install/linux-install/)
 - GOV.UK Notify credentials
