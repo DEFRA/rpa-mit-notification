@@ -75,7 +75,7 @@ These are the template ids setup in the service, they will be in standard GUID f
 
 ```json 
 {
-	"templatesRequesterApproval": "",
+    "templatesRequesterApproval": "",
     "templatesRequesterApproved": "",
     "templatesRequesterRejected": "",
     "templatesApproverApproval": "",
