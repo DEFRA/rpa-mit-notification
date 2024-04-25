@@ -129,10 +129,20 @@ docker compose up
 ---
 ## Usage / Endpoints
 
-### Queue
-
-Below is an **encoded** example message that can be added to the service bus queue to test functionality. Json messages format must be encoded as base64 to be accepted.
-
-```base64
-ewogICAgIkFjdGlvbiI6ICJSZXF1ZXN0ZXJBcHByb3ZhbCIsCiAgICAiRGF0YSI6CiAgICAgICAgewogICAgICAgICAgICAiaW52b2ljZUlkIjogIjEyMzQ1IiwKICAgICAgICAgICAgImxpbmsiOiAiaHR0cHM6Ly9nb29nbGUuY29tIiwKICAgICAgICAgICAgIm5hbWUiOiAiTG9ybmEgQ29sZSIsCiAgICAgICAgICAgICJzY2hlbWVUeXBlIjogImJwcyIsCiAgICAgICAgICAgICJ2YWx1ZSI6ICIyNTAiCiAgICAgICAgfSwKICAgICJJZCI6ICIxMjM0NTY3ODkiLAogICAgIlNjaGVtZSI6ICJicHMiLAogICAgIkVtYWlsUmVjaXBpZW50IjoibG9ybmEuY29sZUBkb21haW4udGxkIgp9
-```
+### Notification Processing
+> Function Trigger: ServiceBusTrigger
+> ##### Endpoint
+> Uses the Service Bus queue trigger named from the environment variable `%NotificationQueueName%`
+> ##### Action
+> Processes incoming notifications by sending emails based on the decoded message data. Validates the message, extracts email and template data, sends the email, and logs the operation results. Notifications are then added to a notification table for tracking.
+> 
+> Below is an **encoded** example message that can be added to the service bus queue to test functionality. Json messages format must be encoded as base64 to be accepted.
+> 
+> ```base64
+> ewogICAgIkFjdGlvbiI6ICJSZXF1ZXN0ZXJBcHByb3ZhbCIsCiAgICAiRGF0YSI6CiAgICAgICAgewogICAgICAgICAgICAiaW52b2ljZUlkIjogIjEyMzQ1IiwKICAgICAgICAgICAgImxpbmsiOiAiaHR0cHM6Ly9nb29nbGUuY29tIiwKICAgICAgICAgICAgIm5hbWUiOiAiTG9ybmEgQ29sZSIsCiAgICAgICAgICAgICJzY2hlbWVUeXBlIjogImJwcyIsCiAgICAgICAgICAgICJ2YWx1ZSI6ICIyNTAiCiAgICAgICAgfSwKICAgICJJZCI6ICIxMjM0NTY3ODkiLAogICAgIlNjaGVtZSI6ICJicHMiLAogICAgIkVtYWlsUmVjaXBpZW50IjoibG9ybmEuY29sZUBkb21haW4udGxkIgp9
+> ```
+> 
+### Email Delivery Status Check
+> Function Trigger: TimerTrigger
+> ##### Action
+> Periodically checks the status of sent emails by querying the notification table and updating the status based on the response from the email service provider. It handles different states like delivered, temporary failure, permanent failure, and technical failure, updating the notification database accordingly and logging each action.
