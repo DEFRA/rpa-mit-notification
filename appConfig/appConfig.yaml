@@ -10,8 +10,8 @@
   value: "{{TableConnectionString}}"  
 - key: NotificationTableName
   value: "{{NotificationTableName}}"  
-- key: AzureWebJobsSecretStorageType
-  value: "{{AzureWebJobsSecretStorageType}}"  
+# - key: AzureWebJobsSecretStorageType
+#   value: "{{AzureWebJobsSecretStorageType}}"  
 - key: NotifyApiKey
   value: "{{NotifyApiKey}}"  
 - key: TriggerTimerInterval
