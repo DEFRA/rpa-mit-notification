@@ -1,7 +1,3 @@
-- key: APPINSIGHTS_CONNECTIONSTRING
-  value: "{{servicename}}-APPINSIGHTS-CONNECTIONSTRING"
-  type: "keyvault"
-
 - key: AzureWebJobsStorage
   value: "AzureWebJobsStorage"
   type: "keyvault"
