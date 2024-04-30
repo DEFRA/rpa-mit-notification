@@ -1,3 +1,62 @@
-- key: APPINSIGHTS_CONNECTIONSTRING
-  value: "{{servicename}}-APPINSIGHTS-CONNECTIONSTRING"
+- key: EventQueueName
+  value: "rpa-mit-events"
+
+- key: NotificationQueueName
+  value: "rpa-mit-invoice-notification"
+
+- key: AzureWebJobsSecretStorageType
+  value: "files"
+
+- key: NotificationTableName
+  value: "rpamitinvoicenotification"
+
+- key: TriggerTimerInterval
+  value: "0 */2 * * * *"
+
+- key: AzureWebJobsStorage
+  value: "AzureWebJobsStorage"
+  type: "keyvault"
+
+- key: QueueConnectionString
+  value: "QueueConnectionString"
+  type: "keyvault"
+
+- key: TableConnectionString
+  value: "TableConnectionString"
+  type: "keyvault"
+
+- key: NotifyApiKey
+  value: "NotifyApiKey"
+  type: "keyvault"
+
+- key: templatesRequesterApproval
+  value: "templatesRequesterApproval"
+  type: "keyvault"
+
+- key: templatesRequesterApproved
+  value: "templatesRequesterApproved"
+  type: "keyvault"
+
+- key: templatesRequesterRejected
+  value: "templatesRequesterRejected"
+  type: "keyvault"
+
+- key: templatesApproverApproval
+  value: "templatesApproverApproval"
+  type: "keyvault"
+
+- key: templatesApproverApproved
+  value: "templatesApproverApproved"
+  type: "keyvault"
+
+- key: templatesApproverRejected
+  value: "templatesApproverRejected"
+  type: "keyvault"
+
+- key: templatesError
+  value: "templatesError"
+  type: "keyvault"
+
+- key: templatesUploaded
+  value: "templatesUploaded"
   type: "keyvault"

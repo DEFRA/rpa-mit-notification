@@ -52,9 +52,25 @@ extends:
     appDeployConfig:
       filepath: "./appConfig"  
       filetype: "yaml"
+    variableGroups:
+      - rpa-mit-notification-<environment>
+    variables:
+      - rpa-mit-notification-APPINSIGHTS-CONNECTIONSTRING
+      - EventQueueName
+      - NotificationQueueName
+      - AzureWebJobsSecretStorageType
+      - NotificationTableName
+      - TriggerTimerInterval
+      - AzureWebJobsStorage
+      - QueueConnectionString
+      - TableConnectionString
+      - NotifyApiKey
+      - templatesRequesterApproval
+      - templatesRequesterApproved
+      - templatesRequesterRejected
+      - templatesApproverApproval
+      - templatesApproverApproved
+      - templatesApproverRejected
+      - templatesError
+      - templatesUploaded
       
-      # # TO BE ADDED IF THERE ARE ANY KEYVAULT REFERENCES IN APP CONFIG
-      # variableGroups: 
-      #   - rpa-mit-web-<environment>
-      # variables:  # FILTER FOR SECRETS IN THE VARIABLE GROUP
-      #   - rpa-mit-web-APPINSIGHTS-CONNECTIONSTRING
