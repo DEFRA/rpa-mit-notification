@@ -1,4 +1,4 @@
-# rpa-mit-notification
+# Notifications
 
 This repository contains an azure function with a Service Bus trigger, the messages to the service bus are sent via other services, its use is as a method of sending email notifications to recipients at key times in the manual invoice process, such as when a user action is required.
 
@@ -53,7 +53,7 @@ Create a local.setttings.json file with the following content.
 
 ### Set up user secrets
 
-Use the secrets-template to create a "secrets.json" in the same folder location as the [RPA.MIT.Notification.Function.csproj](RPA.MIT.Notification.Function/RPA.MIT.Notification.Function.csproj) file.
+Use the secrets-template to create a "secrets.json" in the same folder location.
 
 Once this is done run the following command to add the projects user secrets
 
@@ -115,15 +115,6 @@ If running multiple function apps locally you might encounter a port conflict er
 
 ```bash
 func start --port 7072
-```
-
----
-## Running in Docker
-
-To create the application as a docker container run the following command in the parent directory.
-
-```bash
-docker compose up
 ```
 
 ---
