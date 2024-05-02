@@ -1,0 +1,13 @@
+namespaceQueues:
+ - name: rpa-mit-events
+   roleAssignments:
+     - roleName: 'QueueSender'
+ - name: rpa-mit-invoice-notification
+   roleAssignments:
+     - roleName: 'QueueReceiver'
+storageAccounts:
+ - name: mit 
+   tables:  
+     - name: rpamitinvoicenotification
+       roleAssignments:
+         - roleName: 'TableDataContributor'

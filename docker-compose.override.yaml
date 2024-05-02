@@ -6,7 +6,7 @@ services:
     image: rpa-mit-notification-development
     container_name: rpa-mit-notification-development
     ports:
-      - "3001:80"
+      - "3002:80"
     volumes:
       - ./RPAMITNotificationFunction:/home/dotnet/RPAMITNotificationFunction
       - ./RPAMITNotificationFunction.Tests:/home/dotnet/RPAMITNotificationFunction.Tests

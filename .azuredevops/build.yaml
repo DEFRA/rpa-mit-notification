@@ -1,0 +1,76 @@
+parameters:
+- name: deployFromFeature
+  displayName: "Deploy from Feature Branch"
+  type: boolean
+  default: false
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+  drafts: false
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - "*"
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+
+resources:
+  repositories:
+    - repository: DEFRA-ADPPipelineCommon
+      name: DEFRA/adp-pipeline-common
+      endpoint: DEFRA
+      type: github
+      ref: refs/heads/main
+
+extends:
+  template: /pipelines/common-app-build.yaml@DEFRA-ADPPipelineCommon
+  parameters:
+    projectName: "rpa-mit-notifications"
+    serviceName: "rpa-mit-notifications"
+    deployFromFeature: ${{ parameters.deployFromFeature }}
+    appBuildConfig:
+      appFrameworkType: "dotnet"    
+      projectPath: "./RPA.MIT.Notification.Function/RPA.MIT.Notification.Function.csproj"
+      testProjectPath: "./RPA.MIT.Notification.Function.Tests/RPA.MIT.Notification.Function.Tests.csproj"
+      manifestPath: "./RPA.MIT.Notification.Function/obj/project.assets.json"
+      frameworkVersion: "6.x"
+      imageRepoName: "rpa-mit-notification"
+    appTestConfig:
+      testFilePath: "./docker-compose.test.yaml"
+    appDeployConfig:
+      filepath: "./appConfig"  
+      filetype: "yaml"
+      variableGroups:
+        - rpa-mit-notification-<environment>
+      variables:
+        - rpa-mit-notification-APPINSIGHTS-CONNECTIONSTRING
+        - EventQueueName
+        - NotificationQueueName
+        - AzureWebJobsSecretStorageType
+        - NotificationTableName
+        - TriggerTimerInterval
+        - AzureWebJobsStorage
+        - QueueConnectionString
+        - TableConnectionString
+        - NotifyApiKey
+        - templatesRequesterApproval
+        - templatesRequesterApproved
+        - templatesRequesterRejected
+        - templatesApproverApproval
+        - templatesApproverApproved
+        - templatesApproverRejected
+        - templatesError
+        - templatesUploaded
+

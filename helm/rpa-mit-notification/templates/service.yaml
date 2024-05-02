@@ -1,0 +1,4 @@
+{{- include "adp-helm-library.cluster-ip-service" (list . "rpa-mit-notification.cluster-ip-service") -}}
+{{- define "rpa-mit-notification.cluster-ip-service" -}}
+{{- end -}}
+
